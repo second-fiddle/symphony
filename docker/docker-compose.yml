@@ -1,0 +1,80 @@
+version: "3.3"
+volumes:
+  php-fpm-socket:
+  db-store:
+  psysh-store:
+services:
+  app:
+    build:
+      context: ../backend
+      dockerfile: ../docker/php-laravel/Dockerfile
+    container_name: symphony-app
+    volumes:
+      - type: bind
+        source: ./php-laravel/php-fpm.d/zzz-www.conf
+        target: /usr/local/etc/php-fpm.d/zzz-www.conf
+      - type: bind
+        source: ./php-laravel/php.ini
+        target: /usr/local/etc/php/php.ini
+      - type: volume
+        source: php-fpm-socket
+        target: /var/run/php-fpm
+        volume:
+          nocopy: true
+      - type: bind
+        source: ../backend
+        target: /work/backend
+      - type: volume
+        source: psysh-store
+        target: /root/.config/psysh
+        volume:
+          nocopy: true
+
+  web:
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
+    container_name: symphony-web
+#    ports:
+#      - target: 8000
+#        published: ${WEB_PORT:-80}
+#        protocol: tcp
+#        mode: host
+    ports:
+      - 8000:80
+    volumes:
+      - type: volume
+        source: php-fpm-socket
+        target: /var/run/php-fpm
+        volume:
+          nocopy: true
+      - type: bind
+        source: ../backend
+        target: /work/backend
+
+  db:
+    build:
+      context: .
+      dockerfile: ./mysql/Dockerfile
+    container_name: symphony-db
+    ports:
+      - target: 3306
+        published: ${DB_PORT:-3306}
+        protocol: tcp
+        mode: host
+    volumes:
+      - type: volume
+        source: db-store
+        target: /var/lib/mysql
+        volume:
+          nocopy: true
+    environment:
+      - MYSQL_DATABASE=${DB_NAME:-laravel_local}
+      - MYSQL_USER=${DB_USER:-phper}
+      - MYSQL_PASSWORD=${DB_PASS:-secret}
+      - MYSQL_ROOT_PASSWORD=${DB_PASS:-secret}
+
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - 1080:1080
