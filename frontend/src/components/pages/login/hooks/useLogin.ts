@@ -17,8 +17,8 @@ type FormValues = {
 };
 
 const schema = yup.object({
-  email: yup.string().required().email().label('メールアドレス'),
-  password: yup.string().required().label('パスワード'),
+  email: yup.string().required().email(),
+  password: yup.string().required(),
 });
 
 /**
@@ -49,28 +49,15 @@ const useLogin = (): [
    */
   const handleLogin: SubmitHandler<FormValues> = (values) => {
     setLoginErrorMessage('');
-    try {
-      auth.signin(values.email, values.password, () => {
-        // Send them back to the page they tried to visit when they were
-        // redirected to the login page. Use { replace: true } so we don't create
-        // another entry in the history stack for the login page.  This means that
-        // when they get to the protected page and click the back button, they
-        // won't end up back on the login page, which is also really nice for the
-        // user experience.
+    auth
+      .signin(values.email, values.password)
+      .then(() => {
         navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        const { response } = error as HttpError;
+        setLoginErrorMessage(response.message);
       });
-
-      // await kyClient.get('/sanctum/csrf-cookie');
-      // const response = await kyClient
-      //   .post('/api/login', { json: values })
-      //   .json<HttpResponse>();
-
-      // console.log(response);
-      // console.log('[login]ログイン成功');
-    } catch (error) {
-      const { response } = error as HttpError;
-      setLoginErrorMessage(response.message);
-    }
   };
 
   return [control, handleSubmit, handleLogin, loginErrorMessage];

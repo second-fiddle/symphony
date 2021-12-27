@@ -1,10 +1,12 @@
 import useAuth from 'hooks/auth/useAuth';
 import { useLocation, Navigate } from 'react-router-dom';
 
+/**
+ * ログイン済みページ
+ */
 const RequireAuth = ({ children }: { children: JSX.Element }) => {
   const auth = useAuth();
   const location = useLocation();
-  console.log('requireAuth', auth);
   if (!auth.user) {
     // Redirect them to the /login page, but save the current location they were
     // trying to go to when they were redirected. This allows us to send them

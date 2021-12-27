@@ -26,6 +26,7 @@ class CreateMembersTable extends Migration
             $table->string('tel_3', 4)->nullable();
             $table->string('email', 256)->nullable();
             $table->string('password', 61);
+            $table->datetime('identification_at')->nullable();
             $table->softDeletes();
             $table->dateTime('created_at')->useCurrent();
             $table->string('created_user')->nullable();

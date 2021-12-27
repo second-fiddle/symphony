@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Member extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, CamelModelTrait;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, CamelcaseJson;
 
     /**
      * The attributes that are mass assignable.

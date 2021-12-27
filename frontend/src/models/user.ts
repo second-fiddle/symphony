@@ -1,5 +1,5 @@
 /**
- * 正常レスポンス
+ * ユーザーモデル
  */
 export type User = {
   id?: number;

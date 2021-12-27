@@ -37,6 +37,7 @@ class EloquentUserExMemberProvider extends EloquentUserProvider
         $model = $this->createModel();
         $user = $this->newModelQuery($model)
                      ->where($model->getAuthIdentifierName(), $identifier)
+                     ->whereNotNull('identification_at')
                      ->first();
         return $user;
     }

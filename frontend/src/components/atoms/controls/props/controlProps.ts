@@ -1,13 +1,15 @@
+import { InputBaseProps } from '@mui/material';
 import { ChangeEventHandler, FocusEventHandler } from 'react';
 import { RefCallBack } from 'react-hook-form';
 
-export type InputFieldProps = {
+export type InputFieldProps = InputBaseProps & {
   label?: string;
-  id?: string;
-  placeholder?: string;
-  isRequired?: boolean;
-  showIcon?: boolean;
-  errorMessage?: string | undefined;
+  name: string;
+  required?: boolean;
+  showStartIcon?: boolean;
+  showEndIcon?: boolean;
+  errorMessage?: string;
+  control?: any;
 };
 
 export type RhfRegisterInputFieldProps = {
