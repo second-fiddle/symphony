@@ -17,6 +17,7 @@ const SHeader = styled('header')`
 const Header: VFC = () => {
   const navigate = useNavigate();
   const auth = useAuth();
+  const authUser = auth.loginInfo ? auth.loginInfo.user : null;
 
   const handleLogout = () => {
     auth
@@ -30,9 +31,9 @@ const Header: VFC = () => {
   return (
     <SHeader>
       <div>Logo</div>
-      {auth.user! && (
+      {authUser && (
         <Stack direction="row" spacing={1} alignItems="center">
-          <div>{auth.user.lastName}</div>
+          <div>{authUser.lastName}</div>
           <div>
             <IconButton aria-label="logout" onClick={handleLogout}>
               <LogoutIcon />
