@@ -7,10 +7,11 @@ export const mixed = {
     `${label ? `${label}の` : ''}値が不正です`,
   required: ({ label }: any): string =>
     `${label ? `${label}は` : ''}必須項目です`,
-  oneOf: ({ label, values }: any): string =>
-    `${label ? `${label}には` : ''}以下のものが入力できます: ${values}`,
+  // oneOf: ({ label, values }: any): string =>
+  //   `${label ? `${label}には` : ''}以下のものが入力できます: ${values}`,
   notOneOf: ({ label, values }: any): string =>
     `${label ? `${label}には` : ''}以下のものは入力できません: ${values}`,
+
   // From user's perspective, defined and default is essentially same.
   defined: ({ label }: any): string => `${label ? `${label}は` : ''}必須です`,
 };

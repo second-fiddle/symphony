@@ -5,6 +5,9 @@ import { FullpageCircularProgress } from 'components/atoms/progress/fullPageCirc
 import Header from 'components/pages/layouts/header';
 import ProtectedRoutes from 'routes/protectdRoute';
 import DashboardPage from 'pages/dashboardPage';
+import ChangePasswordPage from 'pages/changePassword/changePasswordPage';
+import ResetPasswordPage from 'pages/resetPassword/reesetPasswordPage';
+import SignUpPage from 'pages/signup/signUp';
 
 const App: VFC = () => {
   const { hash, pathname } = useLocation();
@@ -19,6 +22,9 @@ const App: VFC = () => {
       <main>
         <Routes>
           <Route path="login" element={<LoginPage />} />
+          <Route path="reset-password" element={<ResetPasswordPage />} />
+          <Route path="change-password" element={<ChangePasswordPage />} />
+          <Route path="signup" element={<SignUpPage />} />
           <Route path="/" element={<ProtectedRoutes />}>
             <Route path="" element={<DashboardPage />} />
           </Route>

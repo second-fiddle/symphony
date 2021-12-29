@@ -6,7 +6,7 @@ import {
   useForm,
   UseFormHandleSubmit,
 } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HttpError } from 'services/https/HttpError';
 import { useLocation, useNavigate } from 'react-router';
 import useAuth from 'hooks/auth/useAuth';
@@ -14,6 +14,11 @@ import useAuth from 'hooks/auth/useAuth';
 type FormValues = {
   email: string;
   password: string;
+};
+
+type Result = {
+  result: 'success' | 'error';
+  message?: string;
 };
 
 const schema = yup.object({
@@ -28,12 +33,9 @@ const useLogin = (): [
   Control<FormValues>,
   UseFormHandleSubmit<FormValues>,
   (data: FormValues) => void,
-  string | undefined,
+  Result | null,
 ] => {
-  const [loginErrorMessage, setLoginErrorMessage] = useState<
-    string | undefined
-  >(undefined);
-
+  const [result, setResult] = useState<Result | null>(null);
   const { control, handleSubmit } = useForm<FormValues>({
     resolver: yupResolver(schema),
   });
@@ -47,20 +49,29 @@ const useLogin = (): [
   /**
    * ログインボタンクリック
    */
-  const handleLogin: SubmitHandler<FormValues> = (values) => {
-    setLoginErrorMessage('');
-    auth
-      .signin(values.email, values.password)
-      .then(() => {
-        navigate(from, { replace: true });
-      })
-      .catch((error) => {
-        const { response } = error as HttpError;
-        setLoginErrorMessage(response.message);
-      });
+  const handleLogin: SubmitHandler<FormValues> = async (values, e) => {
+    e?.preventDefault();
+    setResult(null);
+    try {
+      await auth.signin(values.email, values.password);
+      navigate(from, { replace: true });
+    } catch (error) {
+      const { response } = error as HttpError;
+      setResult({ result: 'error', message: response.message });
+    }
   };
 
-  return [control, handleSubmit, handleLogin, loginErrorMessage];
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    if (query.has('changePassword')) {
+      setResult({
+        result: 'success',
+        message: 'パスワードの変更を行いました。',
+      });
+    }
+  }, []);
+
+  return [control, handleSubmit, handleLogin, result];
 };
 
 export default useLogin;

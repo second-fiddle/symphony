@@ -27,16 +27,16 @@ const SAlert = styled(Alert)`
  * ログインページ
  */
 const Login: VFC = () => {
-  const [control, handleSubmit, handleLogin, loginErrorMessage] = useLogin();
+  const [control, handleSubmit, handleLogin, submitResult] = useLogin();
 
   return (
     <>
       <SContainer maxWidth="sm">
         <SBox>
           <PageTitle title="ログイン" />
-          {!!loginErrorMessage && (
-            <SAlert variant="outlined" severity="error">
-              {loginErrorMessage}
+          {submitResult && (
+            <SAlert variant="outlined" severity={submitResult.result}>
+              {submitResult.message}
             </SAlert>
           )}
 
@@ -62,7 +62,7 @@ const Login: VFC = () => {
               <Button type="submit" variant="contained" fullWidth>
                 ログイン
               </Button>
-              <SPasswordForgetLink to="/password-forget" className="item">
+              <SPasswordForgetLink to="/reset-password" className="item">
                 パスワードを忘れた方はこちら
               </SPasswordForgetLink>
             </Stack>
