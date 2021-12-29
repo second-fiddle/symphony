@@ -1,4 +1,4 @@
-import { YupJa as yup } from 'utils/validations/yup/i18n/yupJa';
+import { YupJa as yup } from 'services/validations/yup/i18n/yupJa';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Control,

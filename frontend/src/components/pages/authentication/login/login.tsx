@@ -1,6 +1,6 @@
 import { VFC } from 'react';
 import { Link } from 'react-router-dom';
-import PageTitle from 'components/molecules/authentication/pageTitle';
+import PageTitle from 'components/pages/authentication/pageTitle';
 import { RhfEmailField, RhfPasswordField } from 'components/molecules/controls';
 import styled from '@emotion/styled';
 import { Alert, Box, Button, Container, Stack } from '@mui/material';

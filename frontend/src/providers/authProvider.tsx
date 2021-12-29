@@ -1,15 +1,19 @@
 import { ReactNode, useState } from 'react';
 import AuthContext from 'contexts/authContext';
-import { User } from 'models/user';
 import ApiClient from 'services/https/apiClient';
 import { HttpResponse } from 'services/https/HttpResponse';
+import { LoginInfo } from 'models/loginInfo';
+import {
+  clearStored,
+  LocalStorageKey,
+  setStoredInfo,
+} from 'services/resources/storages/localStorage';
 
 /**
  * ログインプロバイダー
  */
 const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
+  const [loginInfo, setLoginInfo] = useState<LoginInfo | null>(null);
 
   const signin = async (email: string, password: string): Promise<void> => {
     await ApiClient.get('/sanctum/csrf-cookie');
@@ -17,18 +21,18 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       json: { email, password },
     }).json<HttpResponse>();
 
-    const { token: authtoken, user: authUser } = response.data;
-    setToken(authtoken);
-    setUser(authUser);
+    const authInfo = response.data;
+    setLoginInfo(authInfo);
+    setStoredInfo<LoginInfo>(LocalStorageKey.LoginInfo, authInfo);
   };
 
   const signout = async (): Promise<void> => {
     await ApiClient.post('/api/logout');
-    setUser(null);
-    setToken(null);
+    setLoginInfo(null);
+    clearStored(LocalStorageKey.LoginInfo);
   };
 
-  const value = { token, user, signin, signout };
+  const value = { loginInfo, signin, signout };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
