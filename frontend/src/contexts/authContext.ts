@@ -1,8 +1,9 @@
 import { createContext } from 'react';
-import { LoginInfo } from 'models/loginInfo';
+import { User } from 'models/user';
 
 interface AuthContextType {
-  loginInfo: LoginInfo | null;
+  token?: string;
+  user?: User;
   signin: (email: string, password: string) => Promise<void>;
   signout: () => Promise<void>;
 }
