@@ -1,5 +1,8 @@
 import { HttpResponse } from './HttpResponse';
 
+/**
+ * HTTPエラークラス
+ */
 export class HttpError extends Error {
   response: HttpResponse;
 

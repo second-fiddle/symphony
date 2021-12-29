@@ -6,24 +6,26 @@ import { useState } from 'react';
  */
 const useShowPassword = (): [
   'text' | 'password',
-  string,
+  boolean,
   (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 ] => {
   const [inputType, setInputType] = useState<'text' | 'password'>('password');
-  const [iconType, setIconType] = useState('slash');
+  const [showIcon, setShowIcon] = useState<boolean>(false);
 
   /**
    * パスワード表示アイコンクリック時のイベント
    * @param e [React.MouseEvent<HTMLButtonElement, MouseEvent>] イベント
    */
-  const showPassword = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleShowPassword = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
     e.preventDefault();
     const isShow = inputType === 'password';
     setInputType(isShow ? 'text' : 'password');
-    setIconType(isShow ? '' : 'slash');
+    setShowIcon(isShow);
   };
 
-  return [inputType, iconType, showPassword];
+  return [inputType, showIcon, handleShowPassword];
 };
 
 export default useShowPassword;

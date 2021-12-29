@@ -1,41 +1,57 @@
 import { VFC } from 'react';
-import Tooltip from 'components/atoms/controls/notifications/tooltip';
-import { Form, Input } from 'semantic-ui-react';
+import {
+  FormControl,
+  FormHelperText,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+} from '@mui/material';
+import EmailIcon from '@mui/icons-material/Email';
 import { InputFieldProps, RhfRegisterInputFieldProps } from './props';
 
 type EmailFieldProps = InputFieldProps & RhfRegisterInputFieldProps;
 
-const EmailField: VFC<EmailFieldProps> = (props: EmailFieldProps) => {
+/**
+ * メールアドレスフィールド
+ */
+const EmailField: VFC<EmailFieldProps> = (props) => {
   const {
     label,
     id,
     placeholder,
-    isRequired,
-    showIcon,
+    required,
+    showStartIcon,
+    showEndIcon,
     errorMessage,
     value,
     onChange,
     onBlur,
   } = props;
-  const icon: string = showIcon ? 'mail' : '';
-  const iconPosition: 'left' | undefined = showIcon ? 'left' : undefined;
+
+  const iconDom = (position: 'start' | 'end') => (
+    <InputAdornment position={position}>
+      <EmailIcon />
+    </InputAdornment>
+  );
 
   return (
-    <Form.Field required={isRequired}>
-      <label>{label}</label>
-      <Input
-        type="email"
+    <FormControl variant="outlined" error={!!errorMessage}>
+      <InputLabel htmlFor={id} required={required}>
+        {label}
+      </InputLabel>
+      <OutlinedInput
         id={id}
+        type="email"
         placeholder={placeholder}
-        icon={icon}
-        iconPosition={iconPosition}
-        error={!!errorMessage}
+        startAdornment={showStartIcon && iconDom('start')}
+        endAdornment={showEndIcon && iconDom('end')}
+        label={label}
         value={value}
         onChange={onChange}
         onBlur={onBlur}
       />
-      <Tooltip message={errorMessage} />
-    </Form.Field>
+      <FormHelperText>{errorMessage}</FormHelperText>
+    </FormControl>
   );
 };
 

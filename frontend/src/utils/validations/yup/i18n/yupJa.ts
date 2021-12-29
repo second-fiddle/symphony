@@ -5,7 +5,8 @@ import { LocaleObject } from 'yup/lib/locale';
 export const mixed = {
   default: ({ label }: any): string =>
     `${label ? `${label}の` : ''}値が不正です`,
-  required: ({ label }: any): string => `${label ? `${label}は` : ''}必須です`,
+  required: ({ label }: any): string =>
+    `${label ? `${label}は` : ''}必須項目です`,
   oneOf: ({ label, values }: any): string =>
     `${label ? `${label}には` : ''}以下のものが入力できます: ${values}`,
   notOneOf: ({ label, values }: any): string =>

@@ -1,70 +1,74 @@
 import { VFC } from 'react';
-import { Button, Form } from 'semantic-ui-react';
-import Tooltip from 'components/atoms/controls/notifications/tooltip';
-import { css } from '@emotion/react';
+import {
+  FormControl,
+  FormHelperText,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+} from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import KeyIcon from '@mui/icons-material/Key';
 import { InputFieldProps, RhfRegisterInputFieldProps } from './props';
 import useShowPassword from './hooks/useShowPassword';
 
 type PasswordFieldProps = InputFieldProps & RhfRegisterInputFieldProps;
 
-const eyeIconPositionStyle = css`
-  top: 1px;
-  right: 1px;
-  left: auto;
-  position: absolute;
-  padding-right: 0 !important;
-  padding-left: 0 !important;
-  box-shadow: none !important;
-`;
-
-const PasswordField: VFC<PasswordFieldProps> = (props: PasswordFieldProps) => {
+/**
+ * パスワードフィールド
+ */
+const PasswordField: VFC<PasswordFieldProps> = (props) => {
   const {
     label,
     id,
     placeholder,
-    isRequired,
-    showIcon,
+    required,
+    showStartIcon,
+    showEndIcon,
     errorMessage,
     value,
     onChange,
     onBlur,
   } = props;
 
-  const [inputType, icon, showPassword] = useShowPassword();
+  const [inputType, showIcon, handleShowPassword] = useShowPassword();
 
   return (
-    <Form.Field required={isRequired}>
-      {label && <label htmlFor={id}>{label}</label>}
-      {showIcon ? (
-        <div className="ui left icon input">
-          <input
-            id={id}
-            placeholder={placeholder}
-            type={inputType}
-            value={value}
-            onChange={onChange}
-            onBlur={onBlur}
-          />
-          <i className="lock icon" />
-          <Button basic onClick={showPassword} css={eyeIconPositionStyle}>
-            <i className={`eye ${icon} icon password-eye`} />
-          </Button>
-        </div>
-      ) : (
-        <div className="ui right icon input">
-          <input
-            id={id}
-            placeholder={placeholder}
-            type={inputType}
-            value={value}
-            onChange={onChange}
-            onBlur={onBlur}
-          />
-          <i className="eye slash icon" />
-        </div>
-      )}
-      <Tooltip message={errorMessage} />
-    </Form.Field>
+    <FormControl variant="outlined" error={!!errorMessage}>
+      <InputLabel htmlFor={id} required={required}>
+        {label}
+      </InputLabel>
+      <OutlinedInput
+        id={id}
+        type={inputType}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+        placeholder={placeholder}
+        startAdornment={
+          showStartIcon && (
+            <InputAdornment position="start">
+              <KeyIcon />
+            </InputAdornment>
+          )
+        }
+        endAdornment={
+          showEndIcon && (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleShowPassword}
+                edge="end"
+              >
+                {showIcon ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          )
+        }
+        label={label}
+      />
+      <FormHelperText>{errorMessage}</FormHelperText>
+    </FormControl>
   );
 };
 

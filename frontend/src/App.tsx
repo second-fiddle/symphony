@@ -1,10 +1,9 @@
 import { VFC, useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router';
-import AuthLayout from 'components/templates/layouts/authLayout';
 import LoginPage from 'pages/login/loginPage';
-import { Dimmer, Loader } from 'semantic-ui-react';
-import AuthProvider from 'providers/authProvider';
-import RequireAuth from 'providers/requireAuth';
+import { FullpageCircularProgress } from 'components/atoms/progress/fullPageCircularProgress';
+import Header from 'components/organisms/layouts/header';
+import ProtectedRoutes from 'routes/protectdRoute';
 import DashboardPage from 'pages/dashboardPage';
 
 const App: VFC = () => {
@@ -15,26 +14,18 @@ const App: VFC = () => {
   }, [hash, pathname]);
 
   return (
-    <AuthProvider>
-      <div className="container">
-        <Dimmer active={false}>
-          <Loader size="huge">Loading</Loader>
-        </Dimmer>
+    <>
+      <Header />
+      <main>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <RequireAuth>
-                <DashboardPage />
-              </RequireAuth>
-            }
-          />
-          <Route path="" element={<AuthLayout />}>
-            <Route path="login" element={<LoginPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="/" element={<ProtectedRoutes />}>
+            <Route path="" element={<DashboardPage />} />
           </Route>
         </Routes>
-      </div>
-    </AuthProvider>
+      </main>
+      <FullpageCircularProgress show={false} />
+    </>
   );
 };
 

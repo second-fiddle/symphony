@@ -1,19 +1,18 @@
 import { VFC } from 'react';
-import { Header, Image } from 'semantic-ui-react';
+import styled from '@emotion/styled';
 
-type props = {
+type Props = {
   title: string;
 };
 
+const SH2Title = styled('h2')`
+  text-align: center;
+  margin-bottom: 50px;
+`;
+
 /**
  * 認証画面のページタイトルを描画します。
- * @param param0
- * @returns
  */
-const PageTitle: VFC<props> = ({ title }) => (
-  <Header as="h2" color="teal" textAlign="center">
-    <Image src="https://react.semantic-ui.com/logo.png" /> {title}
-  </Header>
-);
+const PageTitle: VFC<Props> = ({ title }) => <SH2Title>{title}</SH2Title>;
 
 export default PageTitle;

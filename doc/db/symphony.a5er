@@ -123,11 +123,12 @@ Field="電話番号（市内局番）","tel_2","*電話番号（市内局番）"
 Field="電話番号（加入者番号）","tel_3","*電話番号（加入者番号）",,,"","",$FFFFFFFF,""
 Field="メールアドレス","email","*メールアドレス",,,"","",$FFFFFFFF,""
 Field="パスワード","password","*パスワード",,,"","",$FFFFFFFF,""
+Field="初期認証日時","identificationed_at","@DATETIME",,,"","",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20211212130013
-Position="MAIN",100,500,275,318
+ModifiedDateTime=20211214081539
+Position="MAIN",100,500,275,343
 ZOrder=2
 
 [Relation]
