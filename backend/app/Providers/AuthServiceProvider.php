@@ -29,7 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         //カスタムProvider
-        Auth::provider('eloquentUserExMember', function($app, array $config) {
+        Auth::provider('eloquentUserExMember', function ($app, array $config) {
             return new EloquentUserExMemberProvider($app['hash'], $config['model']);
         });
     }

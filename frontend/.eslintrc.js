@@ -122,6 +122,7 @@ module.exports = {
     '@typescript-eslint/no-unsafe-call': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'import/no-unresolved': 'off',
+    'react/no-danger': 'off',
   },
   overrides: [
     {

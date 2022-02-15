@@ -9,15 +9,16 @@ import {
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import KeyIcon from '@mui/icons-material/Key';
+import { convertLfToBr } from 'services/utils/StringUtil';
 import { InputFieldProps, RhfRegisterInputFieldProps } from './props';
 import useShowPassword from './hooks/useShowPassword';
 
-type PasswordFieldProps = InputFieldProps & RhfRegisterInputFieldProps;
+type Props = InputFieldProps & RhfRegisterInputFieldProps;
 
 /**
  * パスワードフィールド
  */
-const PasswordField: VFC<PasswordFieldProps> = (props) => {
+const PasswordField: VFC<Props> = (props) => {
   const {
     label,
     id,
@@ -25,16 +26,17 @@ const PasswordField: VFC<PasswordFieldProps> = (props) => {
     required,
     showStartIcon,
     showEndIcon,
-    errorMessage,
+    errorMessages,
     value,
     onChange,
     onBlur,
   } = props;
 
   const [inputType, showIcon, handleShowPassword] = useShowPassword();
+  const showMessage = convertLfToBr(errorMessages);
 
   return (
-    <FormControl variant="outlined" error={!!errorMessage}>
+    <FormControl variant="outlined" error={!!showMessage}>
       <InputLabel htmlFor={id} required={required}>
         {label}
       </InputLabel>
@@ -59,6 +61,7 @@ const PasswordField: VFC<PasswordFieldProps> = (props) => {
                 aria-label="toggle password visibility"
                 onClick={handleShowPassword}
                 edge="end"
+                tabIndex={-1}
               >
                 {showIcon ? <Visibility /> : <VisibilityOff />}
               </IconButton>
@@ -67,7 +70,7 @@ const PasswordField: VFC<PasswordFieldProps> = (props) => {
         }
         label={label}
       />
-      <FormHelperText>{errorMessage}</FormHelperText>
+      <FormHelperText>{showMessage}</FormHelperText>
     </FormControl>
   );
 };

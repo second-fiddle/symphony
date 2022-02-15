@@ -7,17 +7,11 @@ import {
   UseFormHandleSubmit,
 } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import ApiClient from 'services/https/apiClient';
-import { HttpResponse } from 'services/https/HttpResponse';
-import { HttpError } from 'services/https/HttpError';
+import { httpClient, HttpResult } from 'services/https';
 
 type FormValues = {
   password: string;
   confirmPassword: string;
-};
-type Result = {
-  result: 'success' | 'error';
-  message?: string;
 };
 
 const schema = yup.object({
@@ -41,11 +35,11 @@ const useChangePassword = (): [
   Control<FormValues>,
   UseFormHandleSubmit<FormValues>,
   (data: FormValues) => void,
-  Result | null,
+  HttpResult | null,
 ] => {
   const [email, setEmail] = useState<string | null>();
   const [token, setToken] = useState<string | null>();
-  const [result, setResult] = useState<Result | null>(null);
+  const [result, setResult] = useState<HttpResult | null>(null);
 
   const { control, handleSubmit } = useForm<FormValues>({
     resolver: yupResolver(schema),
@@ -58,21 +52,19 @@ const useChangePassword = (): [
     e?.preventDefault();
     setResult(null);
     try {
-      const response = await ApiClient.post('/api/change-password', {
-        json: {
-          password: values.password,
-          password_confirmation: values.confirmPassword,
-          email,
-          token,
-        },
-      }).json<HttpResponse>();
+      const response = await httpClient
+        .post('/api/change-password', {
+          json: {
+            password: values.password,
+            password_confirmation: values.confirmPassword,
+            email,
+            token,
+          },
+        })
+        .json<HttpResult>();
       setResult({ result: 'success', message: response.message });
     } catch (error) {
-      const { response } = <HttpError>error;
-      const message = response.data.password
-        ? response.data.password
-        : response.message;
-      setResult({ result: 'error', message });
+      setResult(<HttpResult>error);
     }
   };
 

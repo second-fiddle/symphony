@@ -18,7 +18,10 @@ export const RhfEmailField: VFC<InputFieldProps> = (props) => {
     required,
     showStartIcon,
     showEndIcon,
+    errors,
   } = props;
+
+  const errorMessages = errors && errors[name];
 
   return (
     <Controller
@@ -27,7 +30,7 @@ export const RhfEmailField: VFC<InputFieldProps> = (props) => {
       defaultValue=""
       render={({
         field: { onChange, onBlur, value, ref },
-        formState: { errors },
+        formState: { errors: formStateErrors },
       }) => (
         <EmailField
           label={label}
@@ -41,9 +44,13 @@ export const RhfEmailField: VFC<InputFieldProps> = (props) => {
           onBlur={onBlur}
           value={value}
           inputRef={ref}
-          errorMessage={
-            errors[name] &&
-            `${(errors[name] as DeepMap<FieldValues, FieldError>)?.message}`
+          errorMessages={
+            errorMessages ||
+            (formStateErrors[name] &&
+              `${
+                (formStateErrors[name] as DeepMap<FieldValues, FieldError>)
+                  ?.message
+              }`)
           }
         />
       )}

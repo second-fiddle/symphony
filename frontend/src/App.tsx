@@ -1,7 +1,7 @@
 import { VFC, useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router';
 import LoginPage from 'pages/login/loginPage';
-import { FullpageCircularProgress } from 'components/atoms/progress/fullPageCircularProgress';
+import { FullpageCircularProgress } from 'components/atoms/notifications/fullPageCircularProgress';
 import Header from 'components/pages/layouts/header';
 import ProtectedRoutes from 'routes/protectdRoute';
 import DashboardPage from 'pages/dashboardPage';

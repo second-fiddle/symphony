@@ -7,50 +7,54 @@ import {
   UseFormHandleSubmit,
 } from 'react-hook-form';
 import { useState } from 'react';
-import { httpClient, HttpResult } from 'services/https';
+
+import { httpClient, HttpResponse, HttpResult } from 'services/https';
 
 type FormValues = {
+  unionCd: string;
   email: string;
+  password: string;
 };
 
 const schema = yup.object({
+  unionCd: yup.string().required(),
   email: yup.string().required().email(),
+  password: yup.string().required(),
 });
 
 /**
- * パスワード再設定画面のイベントを定義します。
+ * 本人確認画面のイベントを定義します。
  */
-const useResetPassword = (): [
+const useIdentification = (): [
   Control<FormValues>,
   UseFormHandleSubmit<FormValues>,
   (data: FormValues) => void,
   HttpResult | null,
 ] => {
   const [result, setResult] = useState<HttpResult | null>(null);
-
   const { control, handleSubmit } = useForm<FormValues>({
     resolver: yupResolver(schema),
   });
 
   /**
-   * 送信ボタンクリック
+   * 確認ボタンクリック
    */
-  const handleSend: SubmitHandler<FormValues> = async (values, e) => {
+  const handleConfirm: SubmitHandler<FormValues> = async (formValues, e) => {
     e?.preventDefault();
     setResult(null);
     try {
       const response = await httpClient
-        .post('/api/reset-password', {
-          json: values,
+        .post('/api/signin/identify', {
+          json: formValues,
         })
-        .json<HttpResult>();
-      setResult({ result: 'success', message: response.message });
-    } catch (error) {
-      setResult(<HttpResult>error);
+        .json<HttpResponse>();
+      setResult(response);
+    } catch (exception) {
+      setResult(<HttpResponse>exception);
     }
   };
 
-  return [control, handleSubmit, handleSend, result];
+  return [control, handleSubmit, handleConfirm, result];
 };
 
-export default useResetPassword;
+export default useIdentification;

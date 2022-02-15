@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import ky from 'ky';
-import { HttpError } from './HttpError';
+import { createErrorResponse, createSuccessResponse } from '.';
 
 /**
  * KYクライアント
  */
-const ApiClient = ky.extend({
+export const httpClient = ky.extend({
   prefixUrl: process.env.API_BASE_URL,
   throwHttpErrors: false,
   headers: { 'Content-Type': 'application/json' },
@@ -13,14 +13,12 @@ const ApiClient = ky.extend({
     beforeRequest: [],
     afterResponse: [
       async (_request, _options, response: Response) => {
+        const httpResponse = await response.json();
         if (response.ok) {
-          return { ...response };
+          return createSuccessResponse(httpResponse);
         }
-        const result = await response.json();
-        throw new HttpError(result);
+        throw createErrorResponse(httpResponse);
       },
     ],
   },
 });
-
-export default ApiClient;

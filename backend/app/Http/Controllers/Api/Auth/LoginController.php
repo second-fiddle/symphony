@@ -29,20 +29,9 @@ class LoginController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
-     *
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function login(LoginRequest $request)
     {
-        //バリデーション
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-
-        $result = false;
-        $status = 401;
-        $message = 'ユーザが見つかりません';
         $user = null;
         $credentials = $request->only('email', 'password');
         if (!Auth::attempt($credentials)) {

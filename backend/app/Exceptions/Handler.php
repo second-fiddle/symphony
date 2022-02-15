@@ -10,8 +10,6 @@ use Illuminate\Validation\ValidationException;
 
 use App\Helpers\Utils\SystemHelper;
 
-use Illuminate\Support\Facades\Log;
-
 class Handler extends ExceptionHandler
 {
     /**
@@ -20,8 +18,7 @@ class Handler extends ExceptionHandler
      * @var string[]
      */
     protected $dontReport = [
-    //
-  ];
+    ];
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
@@ -29,10 +26,10 @@ class Handler extends ExceptionHandler
      * @var string[]
      */
     protected $dontFlash = [
-    'current_password',
-    'password',
-    'password_confirmation',
-  ];
+        'current_password',
+        'password',
+        'password_confirmation',
+    ];
 
     /**
      * Register the exception handling callbacks for the application.
@@ -42,8 +39,6 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->renderable(function (Exception $exception, $request) {
-            Log::error($exception);
-
             if ($request->is('api/*')) {
                 $status = 400;
                 // HTTP系例外が発生した場合
@@ -54,7 +49,7 @@ class Handler extends ExceptionHandler
                 if ($exception instanceof ApplicationException) {
                     return $this->toResponse($exception->getMessage(), $exception->getCode());
                 } elseif ($exception instanceof ValidationException) {
-                    $errors = json_encode($exception->errors(), JSON_UNESCAPED_UNICODE);
+                    $errors = $exception->errors();
                     return $this->toResponse(SystemHelper::getMessage('messages.E.inputerr'), $status, $errors);
                 }
                 // それ以外の場合は Internal Server Error とする

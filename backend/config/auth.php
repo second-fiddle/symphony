@@ -68,6 +68,10 @@ return [
             'driver' => 'eloquentUserExMember',
             'model' => App\Models\Member::class,
         ],
+        'members' => [
+            'driver' => 'eloquentUserExMember',
+            'model' => App\Models\Member::class,
+        ],
     ],
 
     /*
@@ -87,6 +91,12 @@ return [
 
     'passwords' => [
         'users' => [
+            'provider' => 'members',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'members' => [
             'provider' => 'members',
             'table' => 'password_resets',
             'expire' => 60,

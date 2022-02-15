@@ -109,6 +109,8 @@ return [
     |
     */
     'attributes' => [
+        'union_cd' => '所属コード',
+        'email'    => 'メールアドレス',
         'password' => 'パスワード'
     ],
 ];

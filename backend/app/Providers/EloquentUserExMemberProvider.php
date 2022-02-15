@@ -6,9 +6,6 @@ use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 
-use App\Enums\FlagDefine;
-use App\Models\Menu;
-
 /**
  * ユーザーのログイン処理を拡張するプロバイダークラス
  *
@@ -35,10 +32,10 @@ class EloquentUserExMemberProvider extends EloquentUserProvider
     public function retrieveById($identifier)
     {
         $model = $this->createModel();
-        $user = $this->newModelQuery($model)
-                     ->where($model->getAuthIdentifierName(), $identifier)
-                     ->whereNotNull('identification_at')
-                     ->first();
+        $user  = $this->newModelQuery($model)
+                      ->where($model->getAuthIdentifierName(), $identifier)
+                      ->whereNotNull('identification_at')
+                      ->first();
         return $user;
     }
 }

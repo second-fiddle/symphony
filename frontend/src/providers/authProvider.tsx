@@ -1,7 +1,6 @@
 import { ReactNode, useState } from 'react';
 import AuthContext from 'contexts/authContext';
-import ApiClient from 'services/https/apiClient';
-import { HttpResponse } from 'services/https/HttpResponse';
+import { httpClient, HttpResponse } from 'services/https';
 import { LoginInfo } from 'models/loginInfo';
 import {
   clearStored,
@@ -18,10 +17,12 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loginInfo, setLoginInfo] = useState<LoginInfo | null>(storedInfo);
 
   const signin = async (email: string, password: string): Promise<void> => {
-    await ApiClient.get('/sanctum/csrf-cookie');
-    const response = await ApiClient.post('/api/login', {
-      json: { email, password },
-    }).json<HttpResponse>();
+    await httpClient.get('/sanctum/csrf-cookie');
+    const response = await httpClient
+      .post('/api/login', {
+        json: { email, password },
+      })
+      .json<HttpResponse>();
 
     const authInfo = response.data;
     setLoginInfo(authInfo);
@@ -29,7 +30,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signout = async (): Promise<void> => {
-    await ApiClient.post('/api/logout');
+    await httpClient.post('/api/logout');
     setLoginInfo(null);
     clearStored(LocalStorageKey.LoginInfo);
   };

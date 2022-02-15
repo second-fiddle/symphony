@@ -2,9 +2,9 @@ import { VFC } from 'react';
 import PageTitle from 'components/pages/authentication/pageTitle';
 import { RhfPasswordField } from 'components/molecules/controls';
 import styled from '@emotion/styled';
-import { Alert, Box, Button, Container, Stack } from '@mui/material';
+import { Box, Button, Container, Stack } from '@mui/material';
 import { Navigate } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Alert } from 'components/atoms/notifications/alert';
 import useChangePassword from './hooks/useChangePassword';
 
 const SContainer = styled(Container)`
@@ -16,19 +16,15 @@ const SBox = styled(Box)`
   padding: 20px 5px;
   margin: 0 auto 40px auto;
 `;
-const SAlert = styled(Alert)`
-  margin-bottom: 20px;
-  text-align: left;
-`;
 
 /**
  * パスワード変更ページ
  */
 const ChangePassword: VFC = () => {
-  const [control, handleSubmit, handleLogin, submitResult] =
+  const [control, handleSubmit, handleLogin, httpResponse] =
     useChangePassword();
 
-  if (submitResult && submitResult.result === 'success') {
+  if (httpResponse && httpResponse.result === 'success') {
     return <Navigate to="/login?changePassword=" />;
   }
 
@@ -37,16 +33,10 @@ const ChangePassword: VFC = () => {
       <SContainer maxWidth="sm">
         <SBox>
           <PageTitle title="パスワード設定" />
-          {submitResult && (
-            <SAlert variant="outlined" severity="error">
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: submitResult.message ?? '',
-                }}
-              />
-              <Link to="/reset-password">こちら</Link>
-            </SAlert>
-          )}
+          <Alert
+            severity={httpResponse?.result}
+            message={httpResponse?.message}
+          />
 
           <form onSubmit={handleSubmit(handleLogin)}>
             <Stack spacing={2}>
@@ -58,6 +48,7 @@ const ChangePassword: VFC = () => {
                 showStartIcon
                 showEndIcon
                 control={control}
+                errors={httpResponse?.errors}
               />
               <RhfPasswordField
                 id="confirm-password"
@@ -66,6 +57,7 @@ const ChangePassword: VFC = () => {
                 showStartIcon
                 showEndIcon
                 control={control}
+                errors={httpResponse?.errors}
               />
               <Button type="submit" variant="contained" fullWidth>
                 パスワード設定

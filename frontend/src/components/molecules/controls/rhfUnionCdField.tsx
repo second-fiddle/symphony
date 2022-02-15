@@ -1,15 +1,14 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { InputFieldProps } from 'components/atoms/controls/props';
-import PasswordField from 'components/atoms/controls/passwordField';
+/* eslint-disable @typescript-eslint/restrict-template-expressions
+ */
 import { VFC } from 'react';
 import { Controller, DeepMap, FieldError, FieldValues } from 'react-hook-form';
-
-type RhfPasswordFieldProps = InputFieldProps;
+import { InputFieldProps } from 'components/atoms/controls/props';
+import UnionCdField from 'components/atoms/controls/unionCdField';
 
 /**
- * React hook form パスワードフィールド
+ * React hook form メールアドレス
  */
-const RhfPasswordField: VFC<RhfPasswordFieldProps> = (props) => {
+export const RhfUnionCdField: VFC<InputFieldProps> = (props) => {
   const {
     name,
     control,
@@ -33,7 +32,7 @@ const RhfPasswordField: VFC<RhfPasswordFieldProps> = (props) => {
         field: { onChange, onBlur, value, ref },
         formState: { errors: formStateErrors },
       }) => (
-        <PasswordField
+        <UnionCdField
           label={label}
           id={id}
           name={name}
@@ -59,4 +58,4 @@ const RhfPasswordField: VFC<RhfPasswordFieldProps> = (props) => {
   );
 };
 
-export default RhfPasswordField;
+export default RhfUnionCdField;

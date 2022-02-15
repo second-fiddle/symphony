@@ -8,7 +8,8 @@ export type InputFieldProps = InputBaseProps & {
   required?: boolean;
   showStartIcon?: boolean;
   showEndIcon?: boolean;
-  errorMessage?: string;
+  errors?: { [name: string]: Array<string> };
+  errorMessages?: string | string[] | undefined;
   control?: any;
 };
 

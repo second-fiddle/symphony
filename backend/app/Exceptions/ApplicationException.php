@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use RuntimeException;
+use Throwable;
 
 /**
  * アプリケーション例外

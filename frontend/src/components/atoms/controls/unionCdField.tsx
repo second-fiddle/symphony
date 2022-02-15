@@ -6,16 +6,16 @@ import {
   InputLabel,
   OutlinedInput,
 } from '@mui/material';
-import EmailIcon from '@mui/icons-material/Email';
+import ApartmentIcon from '@mui/icons-material/Apartment';
 import { convertLfToBr } from 'services/utils/StringUtil';
 import { InputFieldProps, RhfRegisterInputFieldProps } from './props';
 
 type Props = InputFieldProps & RhfRegisterInputFieldProps;
 
 /**
- * メールアドレスフィールド
+ * 所属コードフィールド
  */
-const EmailField: VFC<Props> = (props) => {
+const UnionCdField: VFC<Props> = (props) => {
   const {
     label,
     id,
@@ -31,7 +31,7 @@ const EmailField: VFC<Props> = (props) => {
 
   const iconDom = (position: 'start' | 'end') => (
     <InputAdornment position={position}>
-      <EmailIcon />
+      <ApartmentIcon />
     </InputAdornment>
   );
 
@@ -58,4 +58,4 @@ const EmailField: VFC<Props> = (props) => {
   );
 };
 
-export default EmailField;
+export default UnionCdField;

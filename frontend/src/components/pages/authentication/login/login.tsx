@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import PageTitle from 'components/pages/authentication/pageTitle';
 import { RhfEmailField, RhfPasswordField } from 'components/molecules/controls';
 import styled from '@emotion/styled';
-import { Alert, Box, Button, Container, Stack } from '@mui/material';
+import { Box, Button, Container, Stack } from '@mui/material';
+import { Alert } from 'components/atoms/notifications/alert';
 import useLogin from './hooks/useLogin';
 
 const SContainer = styled(Container)`
@@ -19,26 +20,22 @@ const SBox = styled(Box)`
 const SPasswordForgetLink = styled(Link)`
   margin-top: 40px !important;
 `;
-const SAlert = styled(Alert)`
-  margin-bottom: 20px;
-`;
 
 /**
  * ログインページ
  */
 const Login: VFC = () => {
-  const [control, handleSubmit, handleLogin, submitResult] = useLogin();
+  const [control, handleSubmit, handleLogin, httpResponse] = useLogin();
 
   return (
     <>
       <SContainer maxWidth="sm">
         <SBox>
           <PageTitle title="ログイン" />
-          {submitResult && (
-            <SAlert variant="outlined" severity={submitResult.result}>
-              {submitResult.message}
-            </SAlert>
-          )}
+          <Alert
+            severity={httpResponse?.result}
+            message={httpResponse?.message}
+          />
 
           <form onSubmit={handleSubmit(handleLogin)}>
             <Stack spacing={2}>
@@ -49,6 +46,7 @@ const Login: VFC = () => {
                 required
                 showStartIcon
                 control={control}
+                errors={httpResponse?.errors}
               />
               <RhfPasswordField
                 id="password"
@@ -58,6 +56,7 @@ const Login: VFC = () => {
                 showStartIcon
                 showEndIcon
                 control={control}
+                errors={httpResponse?.errors}
               />
               <Button type="submit" variant="contained" fullWidth>
                 ログイン

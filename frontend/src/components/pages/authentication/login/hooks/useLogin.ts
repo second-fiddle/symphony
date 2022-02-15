@@ -7,18 +7,13 @@ import {
   UseFormHandleSubmit,
 } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { HttpError } from 'services/https/HttpError';
+import { HttpResult } from 'services/https';
 import { useLocation, useNavigate } from 'react-router';
 import useAuth from 'hooks/auth/useAuth';
 
 type FormValues = {
   email: string;
   password: string;
-};
-
-type Result = {
-  result: 'success' | 'error';
-  message?: string;
 };
 
 const schema = yup.object({
@@ -33,9 +28,9 @@ const useLogin = (): [
   Control<FormValues>,
   UseFormHandleSubmit<FormValues>,
   (data: FormValues) => void,
-  Result | null,
+  HttpResult | null,
 ] => {
-  const [result, setResult] = useState<Result | null>(null);
+  const [result, setResult] = useState<HttpResult | null>(null);
   const { control, handleSubmit } = useForm<FormValues>({
     resolver: yupResolver(schema),
   });
@@ -56,8 +51,7 @@ const useLogin = (): [
       await auth.signin(values.email, values.password);
       navigate(from, { replace: true });
     } catch (error) {
-      const { response } = error as HttpError;
-      setResult({ result: 'error', message: response.message });
+      setResult(<HttpResult>error);
     }
   };
 

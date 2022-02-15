@@ -2,38 +2,28 @@ import { VFC } from 'react';
 import {
   FormControl,
   FormHelperText,
-  InputAdornment,
   InputLabel,
   OutlinedInput,
 } from '@mui/material';
-import EmailIcon from '@mui/icons-material/Email';
 import { convertLfToBr } from 'services/utils/StringUtil';
 import { InputFieldProps, RhfRegisterInputFieldProps } from './props';
 
 type Props = InputFieldProps & RhfRegisterInputFieldProps;
 
 /**
- * メールアドレスフィールド
+ * テキストフィールド
  */
-const EmailField: VFC<Props> = (props) => {
+const TextField: VFC<Props> = (props) => {
   const {
     label,
     id,
     placeholder,
     required,
-    showStartIcon,
-    showEndIcon,
     errorMessages,
     value,
     onChange,
     onBlur,
   } = props;
-
-  const iconDom = (position: 'start' | 'end') => (
-    <InputAdornment position={position}>
-      <EmailIcon />
-    </InputAdornment>
-  );
 
   const showMessage = convertLfToBr(errorMessages);
 
@@ -46,8 +36,6 @@ const EmailField: VFC<Props> = (props) => {
         id={id}
         type="text"
         placeholder={placeholder}
-        startAdornment={showStartIcon && iconDom('start')}
-        endAdornment={showEndIcon && iconDom('end')}
         label={label}
         value={value}
         onChange={onChange}
@@ -58,4 +46,4 @@ const EmailField: VFC<Props> = (props) => {
   );
 };
 
-export default EmailField;
+export default TextField;
