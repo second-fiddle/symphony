@@ -2,6 +2,7 @@
  * HTTPレスポンス
  */
 export type HttpResult = {
+  status?: number;
   result: 'error' | 'warning' | 'info' | 'success' | undefined;
   data?: any;
   message?: string;
@@ -31,6 +32,7 @@ export const createSuccessResponse = (response): HttpResponse => {
  */
 export const createErrorResponse = (response): HttpResponse => {
   const error = <HttpResponse>{};
+  error.status = response.status;
   error.result = 'error';
   error.message = response.message;
   error.errors = response.data;

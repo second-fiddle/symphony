@@ -6,6 +6,12 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Auth\Notifications\ResetPassword;
 
+/**
+ * パスワード再設定メール送信
+ *
+ * @package   App\Notifications
+ * @version   1.0
+ */
 class PasswordResetNotification extends ResetPassword
 {
     use Queueable;
@@ -13,17 +19,19 @@ class PasswordResetNotification extends ResetPassword
     /**
      * Create a new notification instance.
      *
+     * @access public
+     * @param string $token トークン
      * @return void
      */
     public function __construct($token)
     {
         $this->token = $token;
     }
-
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @access public
+     * @param  mixed  $notifiable 会員モデル
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)

@@ -5,49 +5,57 @@ namespace App\Http\Requests\Api\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
+use App\Http\Requests\IRequest;
+
 /**
  * パスワード設定処理のRequestクラス
+ *
+ * @package   App\Http\Requests\Api\Auth
+ * @version   1.0
  */
-class ChangepasswordRequest extends FormRequest
+class ChangepasswordRequest extends FormRequest implements IRequest
 {
     /**
-     * 【必須】
      * 認証設定
      *
      * 画面に参照権限を設ける場合に使用。
      * これを使用しない場合はtrueを固定で返してください
      *
-     * @return void
+     * @access public
+     * @return bool
      */
     public function authorize()
     {
         return true;
     }
     /**
-     * 【必須】
      * バリデーションルール
      *
-     * @return void
+     * @access public
+     * @return array バリデーションルール
      */
     public function rules()
     {
         return [
-            'email' => ['required', 'email', Rule::exists('members', 'email')->withoutTrashed()],
-            'token' => ['required'],
+            'email'    => [
+                'required',
+                'email',
+                Rule::exists('members', 'email')
+                    ->whereNotNull('email_verified_at')
+                    ->withoutTrashed()
+            ],
+            'token'    => ['required'],
             'password' => ['required', 'min:8', 'confirmed'],
         ];
     }
     /**
-     * HTTPリクエスト内の項目の見出しを取得する。
+     * クライアントから受け付けるリクエストパラメータを返す。
      *
-     * @return array HTTPリクエスト内の項目の見出し
+     * @access public
+     * @return array|null
      */
-    public function attributes()
+    public function getParams(): ?array
     {
-        return [
-            'email' => 'メールアドレス',
-            'password' => 'パスワード',
-            'token' => 'トークン',
-        ];
+        return $this->only(['email', 'password', 'password_confirmation', 'token']);
     }
 }

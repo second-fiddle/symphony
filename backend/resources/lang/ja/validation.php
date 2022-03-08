@@ -97,6 +97,10 @@ return [
             'same' => ':otherと同じ値を入力してください。',
         ],
     ],
+    'tel' =>':attributeが不正です。',
+    'nickname' => [
+        'exists' => ':attributeは使用されています。\n別のニックネームを入力してください。',
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -109,8 +113,18 @@ return [
     |
     */
     'attributes' => [
-        'union_cd' => '所属コード',
-        'email'    => 'メールアドレス',
-        'password' => 'パスワード'
+        'propertyCd '       => '建物コード',
+        'email'             => 'メールアドレス',
+        'password'          => 'パスワード',
+        'token'             => 'トークン',
+        'nickname'          => 'ニックネーム',
+        'roomNo'            => '部屋番号',
+        'lastName'          => '姓',
+        'firstName'         => '名',
+        'lastNameRuby'      => '姓(ふりがな)',
+        'firstNameRuby'     => '名(ふりがな)',
+        'tel1'              => '連絡先1',
+        'tel2'              => '連絡先2',
+        'temporaryMemberId' => '仮会員ID',
     ],
 ];

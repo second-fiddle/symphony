@@ -1,7 +1,7 @@
-﻿# A5:ER FORMAT:15
+﻿# A5:ER FORMAT:16
 # A5:ER ENCODING:UTF8
 # A5:ER Mk-1 Copyright © 2007 m.matsubara
-# A5:SQL Mk-2 Version 2.16.1 Copyright © 1997 - 2021 m.matsubara
+# A5:SQL Mk-2 Version 2.17.0 Copyright © 1997 - 2022 m.matsubara
 #  https://a5m2.mmatsubara.com
 
 [Manager]
@@ -12,41 +12,41 @@ ReadOnlyRecommend=0
 Page=Main
 PageInfo="Main",2,"A3Landscape",$C0C0C0
 Domain=id=serial
-DomainInfo="id","serial",""
+DomainInfo="id","serial","",""
 Domain=id(fk)=bigint unsigned
-DomainInfo="id(fk)","bigint unsigned",""
+DomainInfo="id(fk)","bigint unsigned","",""
 Domain=名称=@VARCHAR(100)
-DomainInfo="名称","@VARCHAR(100)",""
+DomainInfo="名称","@VARCHAR(100)","",""
 Domain=地域コード=@VARCHAR(2)
-DomainInfo="地域コード","@VARCHAR(2)",""
+DomainInfo="地域コード","@VARCHAR(2)","",""
 Domain=郵便番号=@VARCHAR(7)
-DomainInfo="郵便番号","@VARCHAR(7)",""
+DomainInfo="郵便番号","@VARCHAR(7)","",""
 Domain=都道府県コード=@VARCHAR(2)
-DomainInfo="都道府県コード","@VARCHAR(2)",""
+DomainInfo="都道府県コード","@VARCHAR(2)","",""
 Domain=市区町村=@VARCHAR(100)
-DomainInfo="市区町村","@VARCHAR(100)",""
+DomainInfo="市区町村","@VARCHAR(100)","",""
 Domain=番地=@VARCHAR(100)
-DomainInfo="番地","@VARCHAR(100)",""
+DomainInfo="番地","@VARCHAR(100)","",""
 Domain=建物名・部屋番号=@VARCHAR(100)
-DomainInfo="建物名・部屋番号","@VARCHAR(100)",""
+DomainInfo="建物名・部屋番号","@VARCHAR(100)","",""
 Domain=姓=@VARCHAR(20)
-DomainInfo="姓","@VARCHAR(20)",""
+DomainInfo="姓","@VARCHAR(20)","",""
 Domain=名=@VARCHAR(20)
-DomainInfo="名","@VARCHAR(20)",""
+DomainInfo="名","@VARCHAR(20)","",""
 Domain=姓（カタカナ）=@VARCHAR(40)
-DomainInfo="姓（カタカナ）","@VARCHAR(40)",""
+DomainInfo="姓（カタカナ）","@VARCHAR(40)","",""
 Domain=名（カタカナ）=@VARCHAR(40)
-DomainInfo="名（カタカナ）","@VARCHAR(40)",""
-Domain=電話番号（市外局番）=@VARCHAR(5)
-DomainInfo="電話番号（市外局番）","@VARCHAR(5)",""
-Domain=電話番号（市内局番）=@VARCHAR(4)
-DomainInfo="電話番号（市内局番）","@VARCHAR(4)",""
-Domain=電話番号（加入者番号）=@VARCHAR(4)
-DomainInfo="電話番号（加入者番号）","@VARCHAR(4)",""
-Domain=パスワード=@VARCHAR(32)
-DomainInfo="パスワード","@VARCHAR(32)",""
+DomainInfo="名（カタカナ）","@VARCHAR(40)","",""
+Domain=電話番号=@VARCHAR(11)
+DomainInfo="電話番号","@VARCHAR(11)","",""
+Domain=パスワード=@VARCHAR(60)
+DomainInfo="パスワード","@VARCHAR(60)","",""
 Domain=メールアドレス=@VARCHAR(256)
-DomainInfo="メールアドレス","@VARCHAR(256)",""
+DomainInfo="メールアドレス","@VARCHAR(256)","",""
+Domain=部屋番号=@VARCHAR(10)
+DomainInfo="部屋番号","@VARCHAR(10)","",""
+Domain=日時=timestamp
+DomainInfo="日時","timestamp","",""
 LogicalView=1
 DecodeDomain=0
 ViewModePageIndividually=1
@@ -67,9 +67,7 @@ RDBMSType=5
 RDBMSTypeName=MySQL
 CommonField="削除日時","deleted_at","@DATETIME",,,"","",$FFFFFFFF
 CommonField="作成日時","created_at","@DATETIME",,,"current_timestamp","",$FFFFFFFF
-CommonField="作成者id","created_user","@VARCHAR",,,"","",$FFFFFFFF
 CommonField="更新日時","updated_at","@DATETIME",,,"current_timestamp on update current_timestamp","",$FFFFFFFF
-CommonField="更新者id","updated_user","@VARCHAR",,,"","",$FFFFFFFF
 DefaultPkName=%0:s_PKC
 DefaultPkIndexName=%0:s_PKI
 DefaultIndexName=%0:s_IX%1:d
@@ -78,77 +76,163 @@ SqlSeparator=0
 UpperCaseKeyword=0
 ShowTag=1
 ShowCommonAttributes=1
+BugFixEntityWidth=0
 
 [Entity]
-PName=unions
-LName=組合
+PName=properties
+LName=物件
 Comment=
 TableOption=
 Page=MAIN
-Left=100
-Top=100
+Left=450
+Top=700
 Field="id","id","*id","NOT NULL",0,"","",$FFFFFFFF,""
-Field="組合コード","code","@VARCHAR(8)",,,"","",$FFFFFFFF,""
-Field="組合名","name","*名称",,,"","",$FFFFFFFF,""
-Field="地域コード","area_code","*地域コード",,,"","",$FFFFFFFF,""
-Field="郵便番号","zip_code","*郵便番号",,,"","",$FFFFFFFF,""
-Field="都道府県コード","prefecture_code","*都道府県コード",,,"","",$FFFFFFFF,""
-Field="市区町村","address1","*市区町村",,,"","",$FFFFFFFF,""
-Field="番地","address2","*番地",,,"","",$FFFFFFFF,""
-Field="建物名","address3","*建物名・部屋番号",,,"","",$FFFFFFFF,""
+Field="物件コード","code","@VARCHAR(8)","NOT NULL",,"","",$FFFFFFFF,""
+Field="物件名","name","*名称","NOT NULL",,"","",$FFFFFFFF,""
+Field="地域コード","area_code","*地域コード","NOT NULL",,"","",$FFFFFFFF,""
+Field="郵便番号","postal_code","*郵便番号","NOT NULL",,"","",$FFFFFFFF,""
+Field="都道府県コード","prefecture_code","*都道府県コード","NOT NULL",,"","",$FFFFFFFF,""
+Field="市区町村","municipality","*市区町村","NOT NULL",,"","",$FFFFFFFF,""
+Field="番地","address1","*番地","NOT NULL",,"","",$FFFFFFFF,""
+Index==2,code
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20211212125959
-Position="MAIN",100,100,277,242
+ModifiedDateTime=20220222222719
+Position="MAIN",450,700,277,242
 ZOrder=1
 
 [Entity]
 PName=members
-LName=組合員
+LName=会員
 Comment=
 TableOption=
 Page=MAIN
-Left=100
-Top=500
+Left=450
+Top=50
 Field="id","id","BIGINT","NOT NULL",0,"","",$FFFFFFFF,""
-Field="組合id","union_id","*id(fk)",,,"","",$FFFFFFFF,""
 Field="姓","last_name","*姓",,,"","",$FFFFFFFF,""
 Field="名","first_name","*名",,,"","",$FFFFFFFF,""
 Field="姓（カタカナ）","last_name_ruby","*姓（カタカナ）",,,"","",$FFFFFFFF,""
 Field="名（カタカナ）","first_name_ruby","*名（カタカナ）",,,"","",$FFFFFFFF,""
-Field="ニックネーム","nickname","@VARCHAR(20)",,,"","",$FFFFFFFF,""
-Field="電話番号（市外局番）","tel_1","*電話番号（市外局番）",,,"","",$FFFFFFFF,""
-Field="電話番号（市内局番）","tel_2","*電話番号（市内局番）",,,"","",$FFFFFFFF,""
-Field="電話番号（加入者番号）","tel_3","*電話番号（加入者番号）",,,"","",$FFFFFFFF,""
-Field="メールアドレス","email","*メールアドレス",,,"","",$FFFFFFFF,""
-Field="パスワード","password","*パスワード",,,"","",$FFFFFFFF,""
-Field="初期認証日時","identificationed_at","@DATETIME",,,"","",$FFFFFFFF,""
+Field="連絡先1","tel1","*電話番号",,,"","",$FFFFFFFF,""
+Field="連絡先2","tel2","*電話番号",,,"","",$FFFFFFFF,""
+Field="メールアドレス","email","*メールアドレス","NOT NULL",,"","",$FFFFFFFF,""
+Field="パスワード","password","*パスワード","NOT NULL",,"","",$FFFFFFFF,""
+Field="メールアドレス確認日時","email_verified_at","*日時",,,"","",$FFFFFFFF,""
+Index==0,email
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20211214081539
-Position="MAIN",100,500,275,343
+ModifiedDateTime=20220226163329
+Position="MAIN",450,50,275,288
 ZOrder=2
 
+[Entity]
+PName=temporary_members
+LName=仮会員
+Comment=
+TableOption=
+Page=MAIN
+Left=100
+Top=750
+Field="id","id","*id","NOT NULL",0,"","",$FFFFFFFF,""
+Field="物件id","property_id","*id(fk)","NOT NULL",,"","",$FFFFFFFF,""
+Field="部屋番号","room_no","*部屋番号","NOT NULL",,"","",$FFFFFFFF,""
+Field="パスワード","password","*パスワード","NOT NULL",,"","",$FFFFFFFF,""
+Field="認証済み","authenticated","*日時","NOT NULL",,"false","",$FFFFFFFF,""
+Index==2,property_id,room_no
+UsingCommonColumns=0
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20220301083036
+Position="MAIN",100,750,272,137
+ZOrder=5
+
 [Relation]
-Entity1=unions
-Entity2=members
+Entity1=properties
+Entity2=temporary_members
 RelationType1=2
 RelationType2=3
 Fields1=id
-Fields2=union_id
+Fields2=id
 Cardinarity1=
 Cardinarity2=
-Position="MAIN",0,4518,4753,4551,R,R,""
-Dependence=0
+Position="MAIN",0,5031,4827,5237,R,R,""
+Dependence=1
 Caption=
 PName=
-ModifiedDateTime=20211128093027
+ModifiedDateTime=20220226163432
 LineMode=0
-Bar1=452
-Bar2=475
-Bar3=455
+Bar1=503
+Bar2=483
+Bar3=524
 TermPos1=R
 TermPos2=R
-ZOrder=3
+ZOrder=6
+
+[Entity]
+PName=member_properties
+LName=会員物件
+Comment=
+TableOption=
+Page=MAIN
+Left=450
+Top=450
+Field="id","id","*id","NOT NULL",0,"","",$FFFFFFFF,""
+Field="会員ID","member_id","*id(fk)","NOT NULL",,"","",$FFFFFFFF,""
+Field="物件ID","property_id","*名称","NOT NULL",,"","",$FFFFFFFF,""
+Field="部屋番号","roomNo","*部屋番号","NOT NULL",,"","",$FFFFFFFF,""
+Field="ニックネーム","nickname","@VARCHAR(20)","NOT NULL",,"","",$FFFFFFFF,""
+UsingCommonColumns=0
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20220226163403
+Position="MAIN",450,450,272,146
+ZOrder=7
+
+[Relation]
+Entity1=members
+Entity2=member_properties
+RelationType1=2
+RelationType2=4
+Fields1=id
+Fields2=member_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,5067,7370,5123,R,R,""
+Dependence=1
+Caption=
+PName=
+ModifiedDateTime=20220226163425
+LineMode=0
+Bar1=507
+Bar2=737
+Bar3=512
+TermPos1=R
+TermPos2=R
+ZOrder=8
+
+[Relation]
+Entity1=properties
+Entity2=member_properties
+RelationType1=2
+RelationType2=3
+Fields1=id
+Fields2=property_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,4857,6216,4946,R,R,""
+Dependence=1
+Caption=
+PName=
+ModifiedDateTime=20220226163427
+LineMode=0
+Bar1=486
+Bar2=622
+Bar3=495
+TermPos1=R
+TermPos2=R
+ZOrder=9

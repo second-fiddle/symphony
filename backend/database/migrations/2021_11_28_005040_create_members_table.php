@@ -14,27 +14,21 @@ class CreateMembersTable extends Migration
     public function up()
     {
         Schema::create('members', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('union_id')->constrained()->cascadeOnDelete();
-            $table->string('last_name', 20)->nullable();
-            $table->string('first_name', 20)->nullable();
-            $table->string('last_name_ruby', 40)->nullable();
-            $table->string('first_name_ruby', 40)->nullable();
-            $table->string('nickname', 20);
-            $table->string('tel_1', 5)->nullable();
-            $table->string('tel_2', 4)->nullable();
-            $table->string('tel_3', 4)->nullable();
-            $table->string('email', 256)->nullable();
-            $table->string('password', 61);
-            $table->datetime('identification_at')->nullable();
+            $table->id()->comment('会員ID');
+            $table->string('last_name', 20)->nullable()->comment('姓');
+            $table->string('first_name', 20)->nullable()->comment('名');
+            $table->string('last_name_ruby', 40)->nullable()->comment('姓(ふりがな)');
+            $table->string('first_name_ruby', 40)->nullable()->comment('名(ふりがな)');
+            $table->string('tel1', 13)->nullable()->comment('連絡先1');
+            $table->string('tel2', 13)->nullable()->comment('連絡先2');
+            $table->string('email', 256)->comment('メールアドレス');
+            $table->string('password', 60)->comment('パスワード');
+            $table->timestamp('email_verified_at')->nullable()->comment('メールアドレス確認日時');
             $table->softDeletes();
             $table->dateTime('created_at')->useCurrent();
-            $table->string('created_user')->nullable();
             $table->dateTime('updated_at')->useCurrentOnUpdate()->useCurrent();
-            $table->string('updated_user')->nullable();
 
-            $table->unique(['union_id', 'nickname', 'deleted_at']);
-            $table->unique(['union_id', 'email', 'deleted_at']);
+            $table->unique(['email', 'deleted_at']);
         });
     }
 

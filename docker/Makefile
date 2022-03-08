@@ -72,7 +72,7 @@ app:
 migrate:
 	docker-compose exec app php artisan migrate
 rollback:
-  docker-compose exec app php artisan migrate:rollback
+	docker-compose exec app php artisan migrate:rollback
 route-list:
 	docker-compose exec app php artisan route:list
 fresh:
@@ -101,10 +101,14 @@ cache:
 	@make optimize
 	docker-compose exec app php artisan event:cache
 	docker-compose exec app php artisan view:cache
+cc:
+	@make cache-clear
 cache-clear:
+	docker-compose exec app rm -rf storage/framework/aop/compile/*.php
 	docker-compose exec app composer clear-cache
 	@make optimize-clear
 	docker-compose exec app php artisan event:clear
+	@make write
 tail-log:
 	docker-compose exec app tail -f storage/logs/laravel.log
 npm:

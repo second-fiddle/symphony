@@ -2,62 +2,62 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use App\Exceptions\ApplicationException;
-use App\Helpers\Utils\SystemHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Http\JsonResponseTrait;
 use App\Http\Requests\Api\Auth\LoginRequest;
+use App\Services\Auth\ILoginService;
+use App\Services\Auth\ILogoutService;
 
+/**
+ * ログインコントローラー
+ *
+ * @package   App\Http\Controllers\Api\Auth
+ * @version   1.0
+ */
 class LoginController extends Controller
 {
     use JsonResponseTrait;
 
     /**
-     * Get the guard to be used during authentication.
+     * コンストラクタ
      *
-     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     * @access public
+     * @param \App\Services\Auth\ILoginService $loginService ログインサービス
+     * @param \App\Services\Auth\ILogoutService $logoutService ログアウトサービス
+     * @return void
      */
-    protected function guard()
-    {
-        return Auth::guard('api');
+    public function __construct(
+        ILoginService $loginService,
+        ILogoutService $logoutService
+    ) {
+        $this->loginService = $loginService;
+        $this->logoutService = $logoutService;
     }
     /**
      * ログイン
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     * @access public
+     * @param  \App\Http\Requests\Api\Auth\LoginRequest  $request リクエスト
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse レスポンス
+     * @throws \App\Exceptions\ApplicationException
      */
     public function login(LoginRequest $request)
     {
-        $user = null;
-        $credentials = $request->only('email', 'password');
-        if (!Auth::attempt($credentials)) {
-            throw new ApplicationException(SystemHelper::getMessage('messages.E.autherror'), Response::HTTP_UNAUTHORIZED);
-        }
-        $user = Auth::user();
-        // ※古いトークン削除&新しいトークン生成
-        $user->tokens()->where('name', 'token-name')->delete();
-        $token = $user->createToken('token-name')->plainTextToken;
+        $credentials = $request->getParams();
+        $loginDto = $this->loginService->login($credentials);
 
-        $data = [
-          'token' => $token,
-          'user'  => $user,
-        ];
-        return $this->success($data);
+        return $this->success($loginDto);
     }
-
     /**
      * ログアウト
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     * @access public
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse レスポンス
      */
-    public function logout(Request $request)
+    public function logout()
     {
-        Auth::logout();
+        $this->logoutService->logout();
         return $this->success();
     }
 }
