@@ -1,4 +1,4 @@
-import { VFC } from 'react';
+import { memo, VFC } from 'react';
 import { Grid } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
@@ -16,7 +16,7 @@ const SGrid = styled(Grid)`
 /**
  * ユーザープロフィール入力確認ページ
  */
-const SignupProfileConfirm: VFC = () => {
+export const SignupProfileConfirm: VFC = memo(() => {
   const identifyInfo = useRecoilValue(signupIdentifyAtom);
   const profile = useRecoilValue(signupProfileAtom);
   const [handleConfirm, httpResponse] = useProfileConfirm();
@@ -93,6 +93,4 @@ const SignupProfileConfirm: VFC = () => {
       </form>
     </Signup>
   );
-};
-
-export { SignupProfileConfirm };
+});

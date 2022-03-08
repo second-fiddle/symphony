@@ -1,4 +1,4 @@
-import { VFC } from 'react';
+import { memo, VFC } from 'react';
 import {
   Button,
   RhfEmailField,
@@ -16,7 +16,7 @@ import { Signup } from './signup';
 /**
  * ユーザープロフィール入力ページ
  */
-const SignupProfile: VFC = () => {
+export const SignupProfile: VFC = memo(() => {
   const identifyInfo = useRecoilValue(signupIdentifyAtom);
   const profile = useRecoilValue(signupProfileAtom);
   const [control, handleSubmit, handleConfirm, httpResponse] = useProfile();
@@ -134,6 +134,4 @@ const SignupProfile: VFC = () => {
       </form>
     </Signup>
   );
-};
-
-export { SignupProfile };
+});

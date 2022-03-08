@@ -1,4 +1,4 @@
-import { VFC } from 'react';
+import { memo, VFC } from 'react';
 import styled from '@emotion/styled';
 import { Box, Container } from '@mui/material';
 import { Alert } from 'components/ui/notifications';
@@ -20,7 +20,7 @@ const SBox = styled(Box)`
 /**
  * パスワード忘れページ
  */
-const Verify: VFC = () => {
+export const Verify: VFC = memo(() => {
   const [httpResponse] = useVerify();
 
   return (
@@ -51,5 +51,4 @@ const Verify: VFC = () => {
       </SContainer>
     </>
   );
-};
-export { Verify };
+});

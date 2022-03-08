@@ -1,4 +1,4 @@
-import { VFC } from 'react';
+import { memo, VFC } from 'react';
 import { Link } from 'react-router-dom';
 import PageTitle from 'biz/authentication/pageTitle';
 import { Button, RhfEmailField, RhfPasswordField } from 'components/ui/inputs';
@@ -24,54 +24,51 @@ const SPasswordForgetLink = styled(Link)`
 /**
  * ログインページ
  */
-const Login: VFC = () => {
+export const Login: VFC = memo(() => {
   const [control, handleSubmit, handleLogin, httpResponse] = useLogin();
 
   return (
-    <>
-      <SContainer maxWidth="sm">
-        <SBox>
-          <PageTitle title="ログイン" />
-          <Alert
-            severity={httpResponse?.result}
-            message={httpResponse?.message}
-          />
+    <SContainer maxWidth="sm">
+      <SBox>
+        <PageTitle title="ログイン" />
+        <Alert
+          severity={httpResponse?.result}
+          message={httpResponse?.message}
+        />
 
-          <form onSubmit={handleSubmit(handleLogin)}>
-            <Stack spacing={2}>
-              <RhfEmailField
-                id="email"
-                name="email"
-                label="メールアドレス"
-                required
-                showStartIcon
-                control={control}
-                errors={httpResponse?.errors}
-              />
-              <RhfPasswordField
-                id="password"
-                name="password"
-                label="パスワード"
-                required
-                showStartIcon
-                showEndIcon
-                control={control}
-                errors={httpResponse?.errors}
-              />
-              <Button>ログイン</Button>
-              <SPasswordForgetLink to="/reset-password" className="item">
-                パスワードを忘れた方はこちら
-              </SPasswordForgetLink>
-            </Stack>
-          </form>
-        </SBox>
-        <div className="ui list right aligned basic segment">
-          <Link to="/signup/tos" className="item">
-            はじめての方はこちら
-          </Link>
-        </div>
-      </SContainer>
-    </>
+        <form onSubmit={handleSubmit(handleLogin)}>
+          <Stack spacing={2}>
+            <RhfEmailField
+              id="email"
+              name="email"
+              label="メールアドレス"
+              required
+              showStartIcon
+              control={control}
+              errors={httpResponse?.errors}
+            />
+            <RhfPasswordField
+              id="password"
+              name="password"
+              label="パスワード"
+              required
+              showStartIcon
+              showEndIcon
+              control={control}
+              errors={httpResponse?.errors}
+            />
+            <Button>ログイン</Button>
+            <SPasswordForgetLink to="/reset-password" className="item">
+              パスワードを忘れた方はこちら
+            </SPasswordForgetLink>
+          </Stack>
+        </form>
+      </SBox>
+      <div className="ui list right aligned basic segment">
+        <Link to="/signup/tos" className="item">
+          はじめての方はこちら
+        </Link>
+      </div>
+    </SContainer>
   );
-};
-export { Login };
+});

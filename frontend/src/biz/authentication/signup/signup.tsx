@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import PageTitle from 'biz/authentication/pageTitle';
 import styled from '@emotion/styled';
 import { Box, Container } from '@mui/material';
@@ -55,7 +55,7 @@ const pageDefines: PageDefine = {
 /**
  * ユーザー登録レイアウト定義
  */
-const Signup: FC = (props) => {
+export const Signup: FC = memo((props) => {
   const { children } = props;
   const navigate = useNavigate();
   const location = useLocation();
@@ -92,6 +92,4 @@ const Signup: FC = (props) => {
       </SBox>
     </SContainer>
   );
-};
-
-export { Signup };
+});

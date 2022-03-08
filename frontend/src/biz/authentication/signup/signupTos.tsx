@@ -1,4 +1,4 @@
-import { VFC } from 'react';
+import { memo, VFC } from 'react';
 import styled from '@emotion/styled';
 import { Link, Stack } from '@mui/material';
 import { Button, CheckBox } from 'components/ui/inputs';
@@ -12,7 +12,7 @@ const SDiv = styled('div')`
 /**
  * 利用規約同意ページ
  */
-const SignupTos: VFC = () => {
+export const SignupTos: VFC = memo(() => {
   const appBaseUrl = process.env.REACT_APP_API_BASE_URL ?? '';
   const [agree, handleAgreeChange, handleSubmit] = useTos();
 
@@ -38,6 +38,4 @@ const SignupTos: VFC = () => {
       </form>
     </Signup>
   );
-};
-
-export { SignupTos };
+});

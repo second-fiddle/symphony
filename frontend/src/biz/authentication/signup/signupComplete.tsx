@@ -1,4 +1,4 @@
-import { useEffect, VFC } from 'react';
+import { memo, useEffect, VFC } from 'react';
 import { Grid } from '@mui/material';
 import styled from '@emotion/styled';
 
@@ -20,7 +20,7 @@ const SGrid = styled(Grid)`
 /**
  * 会員登録完了ページ
  */
-const SignupComplete: VFC = () => {
+export const SignupComplete: VFC = memo(() => {
   const setAgree = useSetRecoilState(signupAgreeAtom);
   const setIdentify = useSetRecoilState(signupIdentifyAtom);
   const setProfile = useSetRecoilState(signupProfileAtom);
@@ -43,6 +43,4 @@ const SignupComplete: VFC = () => {
       </Grid>
     </Signup>
   );
-};
-
-export { SignupComplete };
+});

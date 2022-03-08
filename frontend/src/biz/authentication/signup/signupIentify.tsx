@@ -1,4 +1,4 @@
-import { VFC } from 'react';
+import { memo, VFC } from 'react';
 import {
   Button,
   RhfPasswordField,
@@ -13,7 +13,7 @@ import { Signup } from './signup';
 /**
  * 本人確認ページ
  */
-const SignupIdentify: VFC = () => {
+export const SignupIdentify: VFC = memo(() => {
   const [control, handleSubmit, handleConfirm, httpResponse] = useIdentify();
 
   return (
@@ -51,6 +51,4 @@ const SignupIdentify: VFC = () => {
       </form>
     </Signup>
   );
-};
-
-export { SignupIdentify };
+});

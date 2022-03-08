@@ -1,4 +1,4 @@
-import { VFC } from 'react';
+import { memo, VFC } from 'react';
 import PageTitle from 'biz/authentication/pageTitle';
 import { Button, RhfEmailField } from 'components/ui/inputs';
 import styled from '@emotion/styled';
@@ -25,42 +25,39 @@ const SBackDiv = styled('div')`
 /**
  * パスワード忘れページ
  */
-const ResetPassword: VFC = () => {
+export const ResetPassword: VFC = memo(() => {
   const [control, handleSubmit, handleSend, httpResponse] = useResetPassword();
 
   return (
-    <>
-      <SContainer maxWidth="sm">
-        <SBox>
-          <PageTitle title="パスワードの再設定" />
-          <Alert
-            severity={httpResponse?.result}
-            message={httpResponse?.message}
-          />
+    <SContainer maxWidth="sm">
+      <SBox>
+        <PageTitle title="パスワードの再設定" />
+        <Alert
+          severity={httpResponse?.result}
+          message={httpResponse?.message}
+        />
 
-          <form onSubmit={handleSubmit(handleSend)}>
-            <Stack spacing={2}>
-              <RhfEmailField
-                id="email"
-                name="email"
-                label="メールアドレス"
-                required
-                showStartIcon
-                control={control}
-                errors={httpResponse?.errors}
-              />
-              <Button>送信</Button>
-            </Stack>
-          </form>
+        <form onSubmit={handleSubmit(handleSend)}>
+          <Stack spacing={2}>
+            <RhfEmailField
+              id="email"
+              name="email"
+              label="メールアドレス"
+              required
+              showStartIcon
+              control={control}
+              errors={httpResponse?.errors}
+            />
+            <Button>送信</Button>
+          </Stack>
+        </form>
 
-          <SBackDiv>
-            <Link to="/login" className="item">
-              ログイン画面へ
-            </Link>
-          </SBackDiv>
-        </SBox>
-      </SContainer>
-    </>
+        <SBackDiv>
+          <Link to="/login" className="item">
+            ログイン画面へ
+          </Link>
+        </SBackDiv>
+      </SBox>
+    </SContainer>
   );
-};
-export { ResetPassword };
+});

@@ -1,4 +1,4 @@
-import { VFC } from 'react';
+import { memo, VFC } from 'react';
 import PageTitle from 'biz/authentication/pageTitle';
 import { Button, RhfPasswordField } from 'components/ui/inputs';
 import styled from '@emotion/styled';
@@ -20,7 +20,7 @@ const SBox = styled(Box)`
 /**
  * パスワード変更ページ
  */
-const ChangePassword: VFC = () => {
+export const ChangePassword: VFC = memo(() => {
   const [control, handleSubmit, handleLogin, httpResponse] =
     useChangePassword();
 
@@ -29,42 +29,39 @@ const ChangePassword: VFC = () => {
   }
 
   return (
-    <>
-      <SContainer maxWidth="sm">
-        <SBox>
-          <PageTitle title="パスワード設定" />
-          <Alert
-            severity={httpResponse?.result}
-            message={httpResponse?.message}
-          />
+    <SContainer maxWidth="sm">
+      <SBox>
+        <PageTitle title="パスワード設定" />
+        <Alert
+          severity={httpResponse?.result}
+          message={httpResponse?.message}
+        />
 
-          <form onSubmit={handleSubmit(handleLogin)}>
-            <Stack spacing={2}>
-              <RhfPasswordField
-                id="password"
-                name="password"
-                label="パスワード"
-                required
-                showStartIcon
-                showEndIcon
-                control={control}
-                errors={httpResponse?.errors}
-              />
-              <RhfPasswordField
-                id="confirm-password"
-                name="confirmPassword"
-                label="パスワード(確認用)"
-                showStartIcon
-                showEndIcon
-                control={control}
-                errors={httpResponse?.errors}
-              />
-              <Button>パスワード設定</Button>
-            </Stack>
-          </form>
-        </SBox>
-      </SContainer>
-    </>
+        <form onSubmit={handleSubmit(handleLogin)}>
+          <Stack spacing={2}>
+            <RhfPasswordField
+              id="password"
+              name="password"
+              label="パスワード"
+              required
+              showStartIcon
+              showEndIcon
+              control={control}
+              errors={httpResponse?.errors}
+            />
+            <RhfPasswordField
+              id="confirm-password"
+              name="confirmPassword"
+              label="パスワード(確認用)"
+              showStartIcon
+              showEndIcon
+              control={control}
+              errors={httpResponse?.errors}
+            />
+            <Button>パスワード設定</Button>
+          </Stack>
+        </form>
+      </SBox>
+    </SContainer>
   );
-};
-export { ChangePassword };
+});
