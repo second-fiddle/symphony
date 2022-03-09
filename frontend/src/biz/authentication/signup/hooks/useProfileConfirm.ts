@@ -7,7 +7,7 @@ import { signupIdentifyAtom, signupProfileAtom } from '../states/signupAtom';
 /**
  * プロフィール入力画面のイベントを定義します。
  */
-const useProfileConfirm = (): [() => void, HttpResult | null] => {
+export const useProfileConfirm = (): [() => void, HttpResult | null] => {
   const navigate = useNavigate();
   const profile = useRecoilValue(signupProfileAtom);
   const identifyInfo = useRecoilValue(signupIdentifyAtom);
@@ -36,5 +36,3 @@ const useProfileConfirm = (): [() => void, HttpResult | null] => {
 
   return [handleConfirm, result];
 };
-
-export default useProfileConfirm;

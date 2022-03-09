@@ -45,7 +45,7 @@ const schema = yup.object({
 /**
  * プロフィール入力画面のイベントを定義します。
  */
-const useProfile = (): [
+export const useProfile = (): [
   Control<FormValues>,
   UseFormHandleSubmit<FormValues>,
   (data: FormValues) => void,
@@ -84,5 +84,3 @@ const useProfile = (): [
 
   return [control, handleSubmit, handleConfirm, result];
 };
-
-export default useProfile;

@@ -1,15 +1,9 @@
 import { memo, VFC } from 'react';
 import { Button, RhfEmailField } from 'components/ui/inputs';
-import styled from '@emotion/styled';
 import { Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { AuthenticationLayout } from 'biz/layouts/authentication';
 import useResetPassword from './hooks/useResetPassword';
-
-const SBackDiv = styled('div')`
-  text-align: left;
-  margin-top: 20px;
-`;
 
 /**
  * パスワードの再設定ページ
@@ -37,12 +31,11 @@ export const ResetPassword: VFC = memo(() => {
           <Button>送信</Button>
         </Stack>
       </form>
-
-      <SBackDiv>
+      <div className="tl mt4">
         <Link to="/login" className="item">
           ログイン画面へ
         </Link>
-      </SBackDiv>
+      </div>
     </AuthenticationLayout>
   );
 });

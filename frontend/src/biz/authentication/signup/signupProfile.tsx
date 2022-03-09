@@ -9,7 +9,7 @@ import {
 import { Box, Stack } from '@mui/material';
 import { Alert } from 'components/ui/notifications';
 import { useRecoilValue } from 'recoil';
-import useProfile from './hooks/useProfile';
+import { useProfile } from './hooks/useProfile';
 import { signupIdentifyAtom, signupProfileAtom } from './states/signupAtom';
 import { Signup } from './signup';
 

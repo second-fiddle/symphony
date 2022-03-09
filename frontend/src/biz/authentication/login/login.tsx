@@ -1,20 +1,9 @@
 import { memo, VFC } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, RhfEmailField, RhfPasswordField } from 'components/ui/inputs';
-import styled from '@emotion/styled';
 import { Stack } from '@mui/material';
 import { AuthenticationLayout } from 'biz/layouts/authentication';
 import useLogin from './hooks/useLogin';
-
-const SForm = styled('form')`
-  padding: 20px 5px;
-  margin: 0 auto 20px auto;
-  border-bottom: solid 1px #c0c0c0;
-`;
-
-const SPasswordForgetLink = styled(Link)`
-  margin-top: 40px !important;
-`;
 
 /**
  * ログインページ
@@ -28,7 +17,7 @@ export const Login: VFC = memo(() => {
       result={httpResponse?.result}
       message={httpResponse?.message}
     >
-      <SForm onSubmit={handleSubmit(handleLogin)}>
+      <form onSubmit={handleSubmit(handleLogin)} className="pb4 bb b--silver">
         <Stack spacing={2}>
           <RhfEmailField
             id="email"
@@ -50,12 +39,14 @@ export const Login: VFC = memo(() => {
             errors={httpResponse?.errors}
           />
           <Button>ログイン</Button>
-          <SPasswordForgetLink to="/reset-password" className="item">
-            パスワードを忘れた方はこちら
-          </SPasswordForgetLink>
         </Stack>
-      </SForm>
-      <div className="ui list right aligned basic segment">
+        <div className="mt4">
+          <Link to="/reset-password" className="item">
+            パスワードを忘れた方はこちら
+          </Link>
+        </div>
+      </form>
+      <div className="mt4">
         <Link to="/signup/tos" className="item">
           はじめての方はこちら
         </Link>

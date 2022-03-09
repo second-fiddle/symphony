@@ -6,7 +6,7 @@ import { signupAgreeAtom } from '../states/signupAtom';
 /**
  * 利用規約画面のイベントを定義します。
  */
-const useTos = (): [
+export const useTos = (): [
   boolean,
   (event: ChangeEvent<HTMLInputElement>) => void,
   () => void,
@@ -34,5 +34,3 @@ const useTos = (): [
 
   return [agree, handleAgreeChange, handleSubmit];
 };
-
-export default useTos;

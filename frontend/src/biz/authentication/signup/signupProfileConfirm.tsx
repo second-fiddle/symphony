@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { format } from 'services/utils/TelUtil';
 import { Alert } from 'components/ui/notifications';
 import { Button } from 'components/ui/inputs';
-import useProfileConfirm from './hooks/useProfileConfirm';
+import { useProfileConfirm } from './hooks/useProfileConfirm';
 import { signupProfileAtom, signupIdentifyAtom } from './states/signupAtom';
 import { Signup } from './signup';
 

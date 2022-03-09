@@ -1,15 +1,10 @@
 import { VFC } from 'react';
-import styled from '@emotion/styled';
 import { Alert as MuiAlert } from '@mui/material';
 import { convertLfToBr } from 'services/utils/StringUtil';
-
-const SAlert = styled(MuiAlert)`
-  margin-bottom: 20px;
-  text-align: left;
-`;
+import { HttpResultType } from 'services/https/HttpResponse';
 
 type Props = {
-  severity: 'error' | 'warning' | 'info' | 'success' | undefined;
+  severity?: HttpResultType;
   message: string | null | undefined;
 };
 
@@ -26,8 +21,8 @@ export const Alert: VFC<Props> = (props) => {
   const showMessage = convertLfToBr(message);
 
   return (
-    <SAlert variant="outlined" severity={severity}>
+    <MuiAlert variant="outlined" severity={severity} className="tl mb4">
       {showMessage}
-    </SAlert>
+    </MuiAlert>
   );
 };

@@ -32,7 +32,7 @@ const schema = yup.object({
 /**
  * 本人確認画面のイベントを定義します。
  */
-const useIdentify = (): [
+export const useIdentify = (): [
   Control<FormValues>,
   UseFormHandleSubmit<FormValues>,
   (data: FormValues) => void,
@@ -66,5 +66,3 @@ const useIdentify = (): [
 
   return [control, handleSubmit, handleConfirm, result];
 };
-
-export default useIdentify;

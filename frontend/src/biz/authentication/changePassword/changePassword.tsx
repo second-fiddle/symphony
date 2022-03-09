@@ -1,7 +1,6 @@
 import { memo, VFC } from 'react';
 import { Button, RhfPasswordField } from 'components/ui/inputs';
 import { Stack } from '@mui/material';
-import { Navigate } from 'react-router';
 import { AuthenticationLayout } from 'biz/layouts/authentication';
 import useChangePassword from './hooks/useChangePassword';
 
@@ -11,10 +10,6 @@ import useChangePassword from './hooks/useChangePassword';
 export const ChangePassword: VFC = memo(() => {
   const [control, handleSubmit, handleLogin, httpResponse] =
     useChangePassword();
-
-  if (httpResponse && httpResponse.result === 'success') {
-    return <Navigate to="/login?changePassword=" />;
-  }
 
   return (
     <AuthenticationLayout

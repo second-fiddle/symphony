@@ -8,6 +8,7 @@ import {
 } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { httpClient, HttpResult } from 'services/https';
+import { useNavigate } from 'react-router';
 
 type FormValues = {
   password: string;
@@ -37,6 +38,7 @@ const useChangePassword = (): [
   (data: FormValues) => void,
   HttpResult | null,
 ] => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState<string | null>();
   const [token, setToken] = useState<string | null>();
   const [result, setResult] = useState<HttpResult | null>(null);
@@ -52,7 +54,7 @@ const useChangePassword = (): [
     e?.preventDefault();
     setResult(null);
     try {
-      const response = await httpClient
+      await httpClient
         .post('/api/change-password', {
           json: {
             password: values.password,
@@ -62,7 +64,7 @@ const useChangePassword = (): [
           },
         })
         .json<HttpResult>();
-      setResult({ result: 'success', message: response.message });
+      navigate('/login?changePassword=', { replace: true });
     } catch (error) {
       setResult(<HttpResult>error);
     }

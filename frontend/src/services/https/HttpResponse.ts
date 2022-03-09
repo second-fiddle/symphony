@@ -1,9 +1,13 @@
 /**
+ * HTTP結果タイプ
+ */
+export type HttpResultType = 'error' | 'warning' | 'info' | 'success';
+/**
  * HTTPレスポンス
  */
 export type HttpResult = {
   status?: number;
-  result?: 'error' | 'warning' | 'info' | 'success';
+  result?: HttpResultType;
   data?: any;
   message?: string;
   errors?: { [name: string]: Array<string> };

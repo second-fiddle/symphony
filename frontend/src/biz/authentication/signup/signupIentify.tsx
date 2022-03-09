@@ -7,7 +7,7 @@ import {
 } from 'components/ui/inputs';
 import { Stack } from '@mui/material';
 import { Alert } from 'components/ui/notifications';
-import useIdentify from './hooks/useIdentify';
+import { useIdentify } from './hooks/useIdentify';
 import { Signup } from './signup';
 
 /**

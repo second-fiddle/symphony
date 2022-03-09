@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import App from './App';
 import './index.css';
+import './common.css';
 
 const root = document.getElementById('root') as HTMLElement;
 
