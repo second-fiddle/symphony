@@ -4,7 +4,7 @@ import { Box, Container } from '@mui/material';
 import { Alert } from 'components/ui/notifications';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { green } from '@mui/material/colors';
-import { Button } from 'components/ui/inputs';
+import { Link } from 'react-router-dom';
 import useVerify from './hooks/useVerify';
 
 const SContainer = styled(Container)`
@@ -24,31 +24,34 @@ export const Verify: VFC = memo(() => {
   const [httpResponse] = useVerify();
 
   return (
-    <>
-      <SContainer maxWidth="sm">
-        {httpResponse?.result === 'success' ? (
-          <>
-            <SBox sx={{ border: 'solid 1px grey', borderRadius: '10px' }}>
-              <Box>
-                <CheckCircleIcon fontSize="large" sx={{ color: green[300] }} />
-              </Box>
-              <Box mt={2} mb={1}>
-                メールアドレスの確認ができました
-              </Box>
-            </SBox>
-            <Button href="/login">ログインへ</Button>
-          </>
-        ) : (
-          <SBox>
-            <Alert
-              severity={httpResponse?.result}
-              message={httpResponse?.message}
-            />
-
-            <Button href="/signup">本人確認へ</Button>
+    <SContainer maxWidth="sm">
+      {httpResponse?.result === 'success' ? (
+        <>
+          <SBox sx={{ border: 'solid 1px grey', borderRadius: '10px' }}>
+            <Box>
+              <CheckCircleIcon fontSize="large" sx={{ color: green[300] }} />
+            </Box>
+            <Box mt={2} mb={1}>
+              メールアドレスの確認ができました
+            </Box>
           </SBox>
-        )}
-      </SContainer>
-    </>
+          <SBox sx={{ padding: '0!important' }}>
+            <Link to="/login" className="item">
+              ログイン画面へ
+            </Link>
+          </SBox>
+        </>
+      ) : (
+        <SBox>
+          <Alert
+            severity={httpResponse?.result}
+            message={httpResponse?.message}
+          />
+          <Link to="/signup/tos" className="item">
+            本人確認へ
+          </Link>
+        </SBox>
+      )}
+    </SContainer>
   );
 });

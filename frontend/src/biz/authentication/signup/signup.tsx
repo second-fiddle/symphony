@@ -1,5 +1,4 @@
 import { FC, memo } from 'react';
-import PageTitle from 'biz/authentication/pageTitle';
 import styled from '@emotion/styled';
 import { Box, Container } from '@mui/material';
 import { Navigate, useLocation, useNavigate } from 'react-router';
@@ -16,10 +15,13 @@ const SBox = styled(Box)`
   padding: 20px 5px;
   margin: 0 auto 40px auto;
 `;
-
 const SWrapper = styled('div')`
   max-width: 370px;
   margin: 50px auto 20px auto;
+`;
+const SH2Title = styled('h2')`
+  text-align: center;
+  margin-bottom: 50px;
 `;
 
 type PageDefine = {
@@ -80,7 +82,7 @@ export const Signup: FC = memo((props) => {
   return (
     <SContainer maxWidth="sm">
       <SBox>
-        <PageTitle title={pageDefine.title} />
+        <SH2Title>{pageDefine.title}</SH2Title>
         <SWrapper>
           {children}
           {!!pageDefine.back && (

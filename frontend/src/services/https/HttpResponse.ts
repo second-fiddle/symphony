@@ -3,7 +3,7 @@
  */
 export type HttpResult = {
   status?: number;
-  result: 'error' | 'warning' | 'info' | 'success' | undefined;
+  result?: 'error' | 'warning' | 'info' | 'success';
   data?: any;
   message?: string;
   errors?: { [name: string]: Array<string> };
