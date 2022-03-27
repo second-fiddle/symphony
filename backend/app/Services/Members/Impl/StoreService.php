@@ -1,10 +1,11 @@
 <?php
-namespace App\Services\Members;
+namespace App\Services\Members\Impl;
 
 use App\Aspect\Annotation\Transactional;
 use App\Http\Dtos\Members\MemberDto;
 use App\Repositories\Members\IMemberRepository;
 use App\Repositories\TemporaryMembers\ITemporaryMembersRepository;
+use App\Services\Members\IStoreService;
 
 /**
  * 会員登録を行うサービスクラス
@@ -12,7 +13,7 @@ use App\Repositories\TemporaryMembers\ITemporaryMembersRepository;
  * @package   App\Services\Members
  * @version   1.0
  */
-class StoreServiceImpl implements IStoreService
+class StoreService implements IStoreService
 {
     /**
      * コンストラクタ

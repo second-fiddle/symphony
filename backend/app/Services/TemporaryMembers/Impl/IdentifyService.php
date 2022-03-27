@@ -1,11 +1,12 @@
 <?php
-namespace App\Services\TemporaryMembers;
+namespace App\Services\TemporaryMembers\Impl;
 
 use Illuminate\Http\Response;
 use App\Exceptions\ApplicationException;
 use App\Helpers\Message;
 use App\Http\Dtos\Signup\IdentityDto;
 use App\Repositories\TemporaryMembers\ITemporaryMembersRepository;
+use App\Services\TemporaryMembers\IIdentifyService;
 
 /**
  * 本人確認を行うサービスクラス
@@ -13,7 +14,7 @@ use App\Repositories\TemporaryMembers\ITemporaryMembersRepository;
  * @package   App\Services\TemporaryMembers
  * @version   1.0
  */
-class IdentifyServiceImpl implements IIdentifyService
+class IdentifyService implements IIdentifyService
 {
     /**
      * コンストラクタ

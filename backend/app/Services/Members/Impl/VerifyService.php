@@ -1,10 +1,11 @@
 <?php
-namespace App\Services\Members;
+namespace App\Services\Members\Impl;
 
 use App\Aspect\Annotation\Transactional;
 use App\Exceptions\VerificationExpiredException;
 use App\Repositories\MemberProperties\IMemberPropertyRepository;
 use App\Repositories\TemporaryMembers\ITemporaryMembersRepository;
+use App\Services\Members\IVerifyService;
 
 /**
  * 会員メール認証を行うサービスクラス
@@ -12,7 +13,7 @@ use App\Repositories\TemporaryMembers\ITemporaryMembersRepository;
  * @package   App\Services\Members
  * @version   1.0
  */
-class VerifyServiceImpl implements IVerifyService
+class VerifyService implements IVerifyService
 {
     /**
      * コンストラクタ

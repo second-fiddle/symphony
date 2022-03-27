@@ -49,7 +49,6 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->renderable(function (Exception $exception, $request) {
-            \Log::debug($exception);
             if ($request->is('api/*')) {
                 $status = 400;
                 // HTTP系例外が発生した場合
@@ -61,7 +60,6 @@ class Handler extends ExceptionHandler
                     $exception instanceof AuthenticationException ||
                     $exception instanceof TokenMismatchException
                 ) {
-                    \Log::debug("aaaaaaaaaa");
                     return $this->toResponse($exception->getMessage(), $exception->getCode());
                 } elseif ($exception instanceof ValidationException) {
                     $errors = $exception->errors();

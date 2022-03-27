@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Repositories\TemporaryMembers;
+namespace App\Repositories\TemporaryMembers\Impl;
 
 use App\Models\TemporaryMember;
+use App\Repositories\TemporaryMembers\ITemporaryMembersRepository;
 use Carbon\Carbon;
 
 /**
@@ -11,7 +12,7 @@ use Carbon\Carbon;
  * @package   App\Repositories\TemporaryMembers
  * @version   1.0
  */
-class TemporaryMembersRepositoryImpl implements ITemporaryMembersRepository
+class TemporaryMembersRepository implements ITemporaryMembersRepository
 {
     /**
      * {@inheritdoc}

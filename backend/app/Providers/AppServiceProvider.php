@@ -3,12 +3,11 @@
 namespace App\Providers;
 
 use Illuminate\Routing\UrlGenerator;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 
-use App\Services\AppConfigService;
+use Illuminate\Support\Facades\File;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Class AppServiceProvider
@@ -20,71 +19,70 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $serviceDirs = ['/Services/I*.php','/Services/**/I*.php'];
-        foreach ($serviceDirs as $dir) {
-            foreach (glob(app_path().$dir) as $filepath) {
-                if (Str::endsWith($filepath, 'Impl.php')) {
-                    continue;
-                }
-                list($interface, $clazz) = $this->getBinds($filepath);
-                $this->app->bind($interface, $clazz);
-            }
+        $dirs = [
+            'Services',
+            'Repositories'
+        ];
+        foreach ($dirs as $dir) {
+            $this->bind($dir);
         }
-        $repositoryInterfaceDirs = ['/Repositories/I*.php','/Repositories/**/I*.php'];
-        foreach ($repositoryInterfaceDirs as $dir) {
-            foreach (glob(app_path().$dir) as $filepath) {
-                if (Str::endsWith($filepath, 'Impl.php')) {
-                    continue;
-                }
-                list($interface, $clazz) = $this->getBinds($filepath);
-                $this->app->bind($interface, $clazz);
-            }
-        }
-
-        $this->app->singleton('AppConfigService', function () {
-            return new AppConfigService();
-        });
     }
     /**
-     * バインドするパスを取得する
+     * bindを行う
+     *
+     * @param string $dir 対象のディレクトリ
+     * @return void
+     */
+    private function bind(string $dir)
+    {
+        $finder = new Finder();
+        $iterator = $finder
+            ->in(app_path().'/'.$dir)
+            ->depth('< 2')
+            ->name('I*.php')
+            ->files();
+        foreach ($iterator as $fileinfo) {
+            $filepath = $fileinfo->getPathname();
+            list($interface, $impl) = $this->getBinds($filepath);
+            if (is_null($impl)) {
+                // インターフェイスのみ定義している場合、bindしない
+                continue;
+            }
+
+            $this->app->bind($interface, $impl);
+        }
+    }
+    /**
+     * バインドするインターフェイスと実装クラスのクラスパスを取得する
      *
      * @param string $filepath
-     * @return array interface, clazz
+     * @return array interface, impl
      */
     private function getBinds(string $filepath): array
     {
         $fileInfo = pathinfo($filepath);
-        $namespace = Str::replace(app_path(), 'App', $fileInfo['dirname']);
-        $namespace = Str::replace('/', '\\', $namespace);
-        $interface = "{$namespace}\\{$fileInfo['filename']}";
-        $clazz = substr($fileInfo['filename'], 1).'Impl';
-        $clazz = "{$namespace}\\{$clazz}";
 
-        return [$interface, $clazz];
+        $interfaceDir      = $fileInfo['dirname'];
+        $interfaceFileName = $fileInfo['filename'];
+        $interfacePath     = "{$interfaceDir}/{$interfaceFileName}";
+        $interfaceClass    = Str::replace(app_path(), 'App', $interfacePath);
+        $interfaceClass    = Str::replace('/', '\\', $interfaceClass);
+
+        $implDir      = "{$interfaceDir}/Impl";
+        $implFileName = substr($interfaceFileName, 1);
+        $implFilePath = "{$implDir}/{$implFileName}";
+        $implFIlePathWithExtention = "{$implFilePath}.{$fileInfo['extension']}";
+        $implClass    = Str::replace(app_path(), 'App', $implFilePath);
+        $implClass    = Str::replace('/', '\\', $implClass);
+
+        $implClass = File::exists($implFIlePathWithExtention) ? $implClass : null;
+
+        return [$interfaceClass, $implClass];
     }
     /**
      * {@inheritdoc}
      */
     public function boot(UrlGenerator $url)
     {
-        if (app()->isProduction()) {
-            $url->forceScheme('https');
-        }
-
-        // 商用環境以外だった場合、SQLログを出力する
-        if (!app()->isProduction()) {
-            DB::listen(function ($query) {
-                $sql = $query->sql;
-                for ($i = 0; $i < count($query->bindings); $i++) {
-                    $value = $query->bindings[$i];
-                    if (is_object($value) && get_class($value) === 'DateTime') {
-                        $value = date_format($value, 'Y-m-d H:i:s');
-                    }
-
-                    $sql = preg_replace("/\?/", $value, $sql, 1);
-                }
-                Log::channel('sql')->debug($sql);
-            });
-        }
     }
 }

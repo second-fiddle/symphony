@@ -1,8 +1,9 @@
 <?php
-namespace App\Services\Auth;
+namespace App\Services\Auth\Impl;
 
 use App\Exceptions\ApplicationException;
 use App\Helpers\Message;
+use App\Services\Auth\IResetPasswordService;
 use Illuminate\Support\Facades\Password;
 
 /**
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Password;
  * @package   App\Services\Auth
  * @version   1.0
  */
-class ResetPasswordServiceImpl implements IResetPasswordService
+class ResetPasswordService implements IResetPasswordService
 {
     /**
      * {@inheritdoc}

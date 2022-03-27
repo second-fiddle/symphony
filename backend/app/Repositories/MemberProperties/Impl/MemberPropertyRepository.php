@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Repositories\MemberProperties;
+namespace App\Repositories\MemberProperties\Impl;
 
 use App\Models\MemberProperty;
+use App\Repositories\MemberProperties\IMemberPropertyRepository;
 
 /**
  * member_propertiesテーブルリポジトリを実装する。
@@ -10,7 +11,7 @@ use App\Models\MemberProperty;
  * @package   App\Repositories\MemberProperties
  * @version   1.0
  */
-class MemberPropertyRepositoryImpl implements IMemberPropertyRepository
+class MemberPropertyRepository implements IMemberPropertyRepository
 {
     /**
      * {@inheritdoc}

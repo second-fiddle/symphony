@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Repositories\Members;
+namespace App\Repositories\Members\Impl;
 
 use App\Models\Member;
 use App\Repositories\MemberProperties\IMemberPropertyRepository;
+use App\Repositories\Members\IMemberRepository;
 
 /**
  * membersテーブルリポジトリ定義
@@ -11,7 +12,7 @@ use App\Repositories\MemberProperties\IMemberPropertyRepository;
  * @package   App\Repositories\Members
  * @version   1.0
  */
-class MemberRepositoryImpl implements IMemberRepository
+class MemberRepository implements IMemberRepository
 {
     /**
      * コンストラクタ

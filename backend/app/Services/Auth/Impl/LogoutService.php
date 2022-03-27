@@ -1,6 +1,7 @@
 <?php
-namespace App\Services\Auth;
+namespace App\Services\Auth\Impl;
 
+use App\Services\Auth\ILogoutService;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
  * @package   App\Services\Auth
  * @version   1.0
  */
-class LogoutServiceImpl implements ILogoutService
+class LogoutService implements ILogoutService
 {
     /**
      * {@inheritdoc}

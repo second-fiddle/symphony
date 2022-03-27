@@ -1,9 +1,10 @@
 <?php
-namespace App\Services\Auth;
+namespace App\Services\Auth\Impl;
 
 use App\Exceptions\ApplicationException;
 use App\Helpers\Message;
 use App\Http\Dtos\Login\LoginDto;
+use App\Services\Auth\ILoginService;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @package   App\Services\Auth
  * @version   1.0
  */
-class LoginServiceImpl implements ILoginService
+class LoginService implements ILoginService
 {
     /**
      * {@inheritdoc}
