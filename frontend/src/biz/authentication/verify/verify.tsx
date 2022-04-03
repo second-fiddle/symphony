@@ -1,7 +1,7 @@
 import { memo, VFC } from 'react';
 import styled from '@emotion/styled';
 import { Box, Container } from '@mui/material';
-import useVerify from './hooks/useVerify';
+import { useVerify } from './hooks/useVerify';
 import { VerifySuccess } from './verifySuccess';
 import { VerifyFail } from './verifyFail';
 

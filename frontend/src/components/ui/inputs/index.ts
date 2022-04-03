@@ -9,6 +9,9 @@ export { CheckBox } from './checkbox';
 // button base component
 export { Button } from './button';
 
+// link base component
+export { Link } from './link';
+
 // react hook form component
 export { RhfEmailField } from './rhf/rhfEmailField';
 export { RhfPasswordField } from './rhf/rhfPasswordField';

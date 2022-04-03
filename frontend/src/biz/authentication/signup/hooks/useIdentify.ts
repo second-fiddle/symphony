@@ -6,7 +6,7 @@ import {
   useForm,
   UseFormHandleSubmit,
 } from 'react-hook-form';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { httpClient, HttpResponse, HttpResult } from 'services/https';
 import { useSetRecoilState } from 'recoil';
 import { IdentifyInfo } from 'models/identifyInfo';
@@ -47,22 +47,40 @@ export const useIdentify = (): [
 
   /**
    * 確認ボタンクリック
+   * @param e イベント
    */
-  const handleConfirm: SubmitHandler<FormValues> = async (formValues, e) => {
-    e?.preventDefault();
-    try {
-      const response = await httpClient
+  const handleConfirm: SubmitHandler<FormValues> = useCallback(
+    async (formValues, e) => {
+      e?.preventDefault();
+
+      await httpClient
         .post('/api/signup/identify', {
           json: formValues,
         })
-        .json<HttpResponse>();
-      setIdentifyInfo(response.data);
-      setStoredInfo(LocalStorageKey.Token, response.data.token);
-      navigate('/signup/profile', { replace: true });
-    } catch (exception) {
-      setResult(<HttpResponse>exception);
+        .then(async (response: HttpResponse) => {
+          const responseData = await response.json();
+          setIdentifyInfo(responseData.data);
+          setStoredInfo(LocalStorageKey.Token, responseData.data.token);
+          navigate('/signup/profile', { replace: false });
+        })
+        .catch((error: HttpResponse) => setResult(error));
+    },
+    [],
+  );
+
+  /**
+   * 初期表示
+   */
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    if (query.has('timeout')) {
+      setResult({
+        result: 'error',
+        message:
+          'セッションタイムアウトが発生しました。\\n再度本人確認から行ってください。',
+      });
     }
-  };
+  }, []);
 
   return [control, handleSubmit, handleConfirm, result];
 };

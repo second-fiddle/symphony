@@ -4,6 +4,6 @@ import { SignupProfileConfirm } from 'biz/authentication/signup/signupProfileCon
 /**
  * プロフィール入力確認ページ
  */
-const signupProfileConfirmPage: VFC = () => <SignupProfileConfirm />;
+const SignupProfileConfirmPage: VFC = () => <SignupProfileConfirm />;
 
-export default signupProfileConfirmPage;
+export default SignupProfileConfirmPage;

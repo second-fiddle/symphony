@@ -1,4 +1,5 @@
 export type { HttpResponse } from './HttpResponse';
 export type { HttpResult } from './HttpResponse';
-export { httpClient } from './httpClient'; /* eslint-disable-line */
+/* eslint-disable-next-line */
+export { httpClient } from './httpClient';
 export { createErrorResponse, createSuccessResponse } from './HttpResponse';

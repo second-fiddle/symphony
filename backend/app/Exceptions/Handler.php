@@ -6,9 +6,9 @@ use App\Helpers\Message;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
-use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Session\TokenMismatchException;
+use Exception;
 use Throwable;
 
 /**
@@ -56,15 +56,18 @@ class Handler extends ExceptionHandler
                     $status = $exception->getCode();
                 }
                 // Responsableインターフェースを継承したクラスはここでレスポンスを返す
-                if ($exception instanceof ApplicationException ||
-                    $exception instanceof AuthenticationException ||
-                    $exception instanceof TokenMismatchException
-                ) {
+                if ($exception instanceof TokenMismatchException ||
+                    $exception instanceof SessionTimeoutException) {
+                    return $this->toResponse($exception->getMessage(), Response::HTTP_REQUEST_TIMEOUT);
+                } elseif ($exception instanceof ApplicationException) {
                     return $this->toResponse($exception->getMessage(), $exception->getCode());
                 } elseif ($exception instanceof ValidationException) {
                     $errors = $exception->errors();
                     return $this->toResponse(Message::getMessage('messages.E.inputerr'), $status, $errors);
+                } elseif ($exception instanceof AuthenticationException) {
+                    return $this->toResponse($exception->getMessage(), Response::HTTP_UNAUTHORIZED);
                 }
+
                 // それ以外の場合は Internal Server Error とする
                 return $this->toResponse(Message::getMessage('messages.E.systemerr'), Response::HTTP_INTERNAL_SERVER_ERROR);
             }

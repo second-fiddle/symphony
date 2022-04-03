@@ -1,3 +1,4 @@
+import { useCallback, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { useRecoilValue } from 'recoil';
 import { signupAgreeAtom, signupCompleteAtom } from '../states/signupAtom';
@@ -41,22 +42,24 @@ export const useSignup = (): [Page, () => void] => {
   const agreed = useRecoilValue(signupAgreeAtom);
   const complete = useRecoilValue(signupCompleteAtom);
   const location = useLocation();
-  const path = location.pathname.replace('/signup/', '');
+  const path = location.pathname.replace('/signup/', '') ?? 'tos';
   const pageDefine = pageDefines[path];
-
-  const handleBack = () => {
+  /**
+   * 戻るリンク
+   */
+  const handleBack = useCallback(() => {
     if (pageDefine.back) {
-      navigate(`/signup/${pageDefine.back}`, { replace: true });
+      navigate(`/signup/${pageDefine.back}`, { replace: false });
     }
-  };
+  }, []);
 
-  if (complete) {
-    console.log('complete', complete);
-    navigate('/signup/complete', { replace: true });
-  }
-  if (path !== 'tos' && !agreed) {
-    navigate('/signup/tos', { replace: true });
-  }
+  useEffect(() => {
+    if (complete) {
+      navigate('/signup/complete', { state: { x: 1 }, replace: true });
+    } else if (path !== 'tos' && !agreed) {
+      navigate('/signup/tos', { replace: true });
+    }
+  }, []);
 
   return [pageDefine, handleBack];
 };

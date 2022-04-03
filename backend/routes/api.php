@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\SignupController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |-----------------------W---------------------------------------------------
 | API Routes
@@ -14,3 +17,11 @@
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+
+Route::prefix('signup')->group(function () {
+    Route::post('identify', [SignupController::class, 'identify']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('profile', [SignupController::class, 'profile']);
+        Route::post('register', [SignupController::class, 'register']);
+    });
+});

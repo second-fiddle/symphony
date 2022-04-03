@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useSetRecoilState } from 'recoil';
 import { signupAgreeAtom } from '../states/signupAtom';
@@ -9,7 +9,7 @@ import { signupAgreeAtom } from '../states/signupAtom';
 export const useTos = (): [
   boolean,
   (event: ChangeEvent<HTMLInputElement>) => void,
-  () => void,
+  (e: React.FormEvent) => void,
 ] => {
   const navigate = useNavigate();
   const [agree, setAgree] = useState(false);
@@ -18,19 +18,22 @@ export const useTos = (): [
    * 利用規約に同意するチェック状態変更ハンドラー
    * @param e イベント
    */
-  const handleAgreeChange = (e) => {
+  const handleAgreeChange = useCallback((e) => {
     setAgree(e.target.checked);
-  };
+  }, []);
   /**
    * 同意するボタンクリック
+   * @param e イベント
    */
-  const handleSubmit = () => {
+  const handleSubmit = useCallback((e) => {
+    e.preventDefault();
     if (!agree) {
       return;
     }
+
     setAgreed(agree);
     navigate('/signup/identify', { replace: true });
-  };
+  }, []);
 
   return [agree, handleAgreeChange, handleSubmit];
 };

@@ -9,10 +9,14 @@ const SWrapper = styled('div')`
   margin: 40px auto 20px auto;
 `;
 
+type Props = {
+  message?: string;
+};
+
 /**
  * ユーザー登録レイアウト定義
  */
-export const Signup: FC = memo((props) => {
+export const Signup: FC<Props> = memo((props) => {
   const { children } = props;
   const [pageDefine, handleBack] = useSignup();
 

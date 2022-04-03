@@ -7,6 +7,7 @@ use App\Helpers\Message;
 use App\Http\Dtos\Signup\IdentityDto;
 use App\Repositories\TemporaryMembers\ITemporaryMembersRepository;
 use App\Services\TemporaryMembers\IIdentifyService;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * 本人確認を行うサービスクラス
@@ -30,20 +31,15 @@ class IdentifyService implements IIdentifyService
     /**
      * {@inheritdoc}
      */
-    public function identify($params): IdentityDto
+    public function identify($credentials): IdentityDto
     {
-        $temporaryMember = $this->temporaryMembersRepository->findByPropertyCdAndRoomNo($params['propertyCd'], $params['roomNo']);
-        if (is_null($temporaryMember)) {
+        if (!Auth::guard('signup')->attempt($credentials)) {
             throw new ApplicationException(Message::getMessage('messages.E.autherror'), Response::HTTP_UNAUTHORIZED);
-        } elseif ($temporaryMember->authenticated) {
+        }
+        $temporaryMember = Auth::guard('signup')->user();
+        if ($temporaryMember->authenticated) {
             throw new ApplicationException(Message::getMessage('messages.E.signup.identify.authenticated'), Response::HTTP_UNAUTHORIZED);
         }
-        $hasher = app('hash');
-        if ($hasher->check($params['password'], $temporaryMember->password)) {
-            $token = $temporaryMember->createToken('identify')->plainTextToken;
-            return new IdentityDto($token, $temporaryMember);
-        }
-
-        throw new ApplicationException(Message::getMessage('messages.E.autherror'), Response::HTTP_UNAUTHORIZED);
+        return new IdentityDto($temporaryMember->createPlainTextToken(), $temporaryMember);
     }
 }

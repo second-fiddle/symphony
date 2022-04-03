@@ -8,23 +8,23 @@ const { persistAtom } = recoilPersist();
 export const signupAgreeAtom = atom<boolean>({
   key: 'signup.agree',
   default: false,
-  effects_UNSTABLE: [persistAtom],
+  effects: [persistAtom],
 });
 
 export const signupIdentifyAtom = atom<IdentifyInfo>({
   key: 'signup.identifyInfo',
   default: {} as IdentifyInfo,
-  effects_UNSTABLE: [persistAtom],
+  effects: [persistAtom],
 });
 
 export const signupProfileAtom = atom<Member>({
   key: 'signup.profile',
   default: {} as Member,
-  effects_UNSTABLE: [persistAtom],
+  effects: [persistAtom],
 });
 
 export const signupCompleteAtom = atom<boolean>({
   key: 'signup.complete',
   default: false,
-  effects_UNSTABLE: [persistAtom],
+  effects: [persistAtom],
 });

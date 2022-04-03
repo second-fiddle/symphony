@@ -2,11 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\PersonalAccessToken;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
-
 use Illuminate\Support\Facades\File;
+use Laravel\Sanctum\Sanctum;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -84,5 +85,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(UrlGenerator $url)
     {
+        // Sanctuom PersonalAccessTokenモデル置き換え
+        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
     }
 }

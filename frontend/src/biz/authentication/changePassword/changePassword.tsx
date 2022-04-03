@@ -2,7 +2,7 @@ import { memo, VFC } from 'react';
 import { Button, RhfPasswordField } from 'components/ui/inputs';
 import { Stack } from '@mui/material';
 import { AuthenticationLayout } from 'biz/layouts/authentication';
-import useChangePassword from './hooks/useChangePassword';
+import { useChangePassword } from './hooks/useChangePassword';
 
 /**
  * パスワード変更ページ

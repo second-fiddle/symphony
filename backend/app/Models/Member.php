@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Traits\AuthenticationModel;
+use App\Models\Traits\Authentication;
 use App\Models\Traits\CamelcaseJson;
 use App\Notifications\VerifyNotification;
 use App\Notifications\PasswordResetNotification;
@@ -27,7 +27,7 @@ class Member extends Authenticatable implements MustVerifyEmail
         Notifiable,
         SoftDeletes,
         CamelcaseJson,
-        AuthenticationModel;
+        Authentication;
 
     /**
      * The attributes that are mass assignable.
@@ -45,7 +45,12 @@ class Member extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
     ];
-
+    /**
+     * トークンのアビリティ
+     *
+     * @var string
+     */
+    protected $ability = 'authenticated';
     /**
      * The attributes that should be hidden for serialization.
      *

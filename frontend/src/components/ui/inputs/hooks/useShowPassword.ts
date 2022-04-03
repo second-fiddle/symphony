@@ -4,7 +4,7 @@ import { useState } from 'react';
  * パスワードコントロールのイベントを定義します。
  * @returns
  */
-const useShowPassword = (): [
+export const useShowPassword = (): [
   'text' | 'password',
   boolean,
   (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
@@ -27,5 +27,3 @@ const useShowPassword = (): [
 
   return [inputType, showIcon, handleShowPassword];
 };
-
-export default useShowPassword;

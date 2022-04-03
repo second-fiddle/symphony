@@ -6,8 +6,8 @@ import {
   useForm,
   UseFormHandleSubmit,
 } from 'react-hook-form';
-import { useEffect, useState } from 'react';
-import { httpClient, HttpResult } from 'services/https';
+import { useCallback, useEffect, useState } from 'react';
+import { httpClient, HttpResponse, HttpResult } from 'services/https';
 import { useNavigate } from 'react-router';
 
 type FormValues = {
@@ -32,7 +32,7 @@ const schema = yup.object({
 /**
  * パスワード再設定画面のイベントを定義します。
  */
-const useChangePassword = (): [
+export const useChangePassword = (): [
   Control<FormValues>,
   UseFormHandleSubmit<FormValues>,
   (data: FormValues) => void,
@@ -49,11 +49,12 @@ const useChangePassword = (): [
 
   /**
    * 送信ボタンクリック
+   * @param values: FormValues 入力内容
+   * @param e イベント
    */
-  const handleSend: SubmitHandler<FormValues> = async (values, e) => {
-    e?.preventDefault();
-    setResult(null);
-    try {
+  const handleSend: SubmitHandler<FormValues> = useCallback(
+    async (values, e) => {
+      e?.preventDefault();
       await httpClient
         .post('/api/change-password', {
           json: {
@@ -63,13 +64,14 @@ const useChangePassword = (): [
             token,
           },
         })
-        .json<HttpResult>();
-      navigate('/login?changePassword=', { replace: true });
-    } catch (error) {
-      setResult(<HttpResult>error);
-    }
-  };
-
+        .then(() => navigate('/login?changePassword=', { replace: true }))
+        .catch((error: HttpResponse) => setResult(error));
+    },
+    [],
+  );
+  /**
+   * 初期表示
+   */
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
 
@@ -79,5 +81,3 @@ const useChangePassword = (): [
 
   return [control, handleSubmit, handleSend, result];
 };
-
-export default useChangePassword;

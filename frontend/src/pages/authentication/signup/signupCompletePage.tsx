@@ -4,6 +4,6 @@ import { SignupComplete } from 'biz/authentication/signup/signupComplete';
 /**
  * 会員登録完了ページ
  */
-const signupCompletePage: VFC = () => <SignupComplete />;
+const SignupCompletePage: VFC = () => <SignupComplete />;
 
-export default signupCompletePage;
+export default SignupCompletePage;

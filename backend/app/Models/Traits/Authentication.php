@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
  * @package   App\Models\Traits
  * @version   1.0
  */
-trait AuthenticationModel
+trait Authentication
 {
     /**
      * 適用されているgurad名を取得する。
@@ -47,14 +47,13 @@ trait AuthenticationModel
      * 認証トークンを作成し、プレーンテキストで返す。
      *
      * @access public
-     * @param string $tokenName 作成するトークン名
      * @return string 作成したトークン
      */
-    public function createPlainTextToken(string $tokenName): string
+    public function createPlainTextToken(): string
     {
         // ※古いトークン削除&新しいトークン生成
-        $this->tokens()->where('name', "{$tokenName}-{$this->id}")->delete();
+        $this->tokens()->where('name', "{$this->ability}-{$this->id}")->delete();
 
-        return $this->createToken($tokenName)->plainTextToken;
+        return $this->createToken($this->ability)->plainTextToken;
     }
 }

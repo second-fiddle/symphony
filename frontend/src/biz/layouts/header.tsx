@@ -1,4 +1,4 @@
-import { MouseEvent, useState, VFC } from 'react';
+import { memo, MouseEvent, useCallback, useState, VFC } from 'react';
 import {
   AppBar,
   IconButton,
@@ -14,19 +14,19 @@ import { AccountCircle } from '@mui/icons-material';
 import { useRecoilState } from 'recoil';
 import { authAtom } from 'states/authAtom';
 import { Navigate } from 'react-router';
-import useLogout from './hooks/useLogout';
+import { useLogout } from './hooks/useLogout';
 
-const Header: VFC = () => {
+export const Header: VFC = memo(() => {
   const [loginInfo] = useRecoilState(authAtom);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [handleLogout, resultLogout] = useLogout();
 
-  const handleMenu = (event: MouseEvent<HTMLElement>) => {
+  const handleMenu = useCallback((event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
+  }, []);
+  const handleClose = useCallback(() => {
     setAnchorEl(null);
-  };
+  }, []);
 
   if (resultLogout === 'success') {
     return <Navigate to="/login" />;
@@ -84,6 +84,4 @@ const Header: VFC = () => {
       </Toolbar>
     </AppBar>
   );
-};
-
-export default Header;
+});

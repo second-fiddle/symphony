@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Traits\AuthenticationModel;
+use App\Models\Traits\Authentication;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -17,10 +17,16 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class TemporaryMember extends Authenticatable
 {
-    use HasApiTokens, HasFactory, CamelcaseJson, AuthenticationModel;
+    use HasApiTokens, HasFactory, CamelcaseJson, Authentication;
 
     public $timestamps = false;
 
+    /**
+     * トークンのアビリティ
+     *
+     * @var string
+     */
+    protected $ability = 'identify';
     /**
      * propertiesテーブルリレーション定義
      *

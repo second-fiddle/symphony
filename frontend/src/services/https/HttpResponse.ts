@@ -8,7 +8,7 @@ export type HttpResultType = 'error' | 'warning' | 'info' | 'success';
 export type HttpResult = {
   status?: number;
   result?: HttpResultType;
-  data?: any;
+  data?: any; // eslint-disable-line
   message?: string;
   errors?: { [name: string]: Array<string> };
 };

@@ -6,10 +6,10 @@ import {
   useForm,
   UseFormHandleSubmit,
 } from 'react-hook-form';
-import { useEffect, useState } from 'react';
-import { httpClient, HttpResponse, HttpResult } from 'services/https';
+import { useCallback, useEffect, useState } from 'react';
+import { httpClient, HttpResponse, HttpResult } from 'services/https'; // HttpResponse
 import { useLocation, useNavigate } from 'react-router';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { authAtom } from 'states/authAtom';
 import {
   LocalStorageKey,
@@ -29,18 +29,17 @@ const schema = yup.object({
 /**
  * ログイン画面のイベントを定義します。
  */
-const useLogin = (): [
+export const useLogin = (): [
   Control<FormValues>,
   UseFormHandleSubmit<FormValues>,
   (data: FormValues) => void,
   HttpResult | null,
 ] => {
-  const [, setLoginInfo] = useRecoilState(authAtom);
+  const setLoginInfo = useSetRecoilState(authAtom);
   const [result, setResult] = useState<HttpResult | null>(null);
   const { control, handleSubmit } = useForm<FormValues>({
     resolver: yupResolver(schema),
   });
-
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -48,28 +47,31 @@ const useLogin = (): [
 
   /**
    * ログインボタンクリック
+   * @param e イベント
    */
-  const handleLogin: SubmitHandler<FormValues> = async (values, e) => {
-    e?.preventDefault();
-    setResult(null);
-    try {
+  const handleLogin: SubmitHandler<FormValues> = useCallback(
+    async (values, e) => {
+      e?.preventDefault();
       await httpClient.get('/sanctum/csrf-cookie');
-      const response = await httpClient
+      await httpClient
         .post('/api/login', {
           json: values,
         })
-        .json<HttpResponse>();
+        .then(async (response: HttpResponse) => {
+          const responseData = await response.json();
+          const authInfo = responseData.data;
+          setLoginInfo(authInfo);
+          setStoredInfo(LocalStorageKey.Token, authInfo.token);
 
-      const authInfo = response.data;
-      setLoginInfo(authInfo);
-      setStoredInfo(LocalStorageKey.Token, authInfo.token);
-
-      navigate(from, { replace: true });
-    } catch (error) {
-      setResult(<HttpResult>error);
-    }
-  };
-
+          navigate(from, { replace: true });
+        })
+        .catch((error: HttpResponse) => setResult(error));
+    },
+    [],
+  );
+  /**
+   * 初期表示
+   */
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
     if (query.has('changePassword')) {
@@ -78,6 +80,7 @@ const useLogin = (): [
         message: 'パスワードの変更を行いました。',
       });
     } else if (query.has('sessionTimeout')) {
+      // TODO セッションタイムアウトページ作る(ErrorBoundaryで対応)
       setResult({
         result: 'success',
         message:
@@ -88,5 +91,3 @@ const useLogin = (): [
 
   return [control, handleSubmit, handleLogin, result];
 };
-
-export default useLogin;

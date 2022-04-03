@@ -21,10 +21,10 @@ class LoginService implements ILoginService
      */
     public function login(array $credentials): LoginDto
     {
-        if (!Auth::attempt($credentials)) {
+        if (!Auth::attempt($credentials, true)) {
             throw new ApplicationException(Message::getMessage('messages.E.autherror'), Response::HTTP_UNAUTHORIZED);
         }
         $member = Auth::user();
-        return new LoginDto($member->createPlainTextToken('authenticated'), $member);
+        return new LoginDto($member->createPlainTextToken(), $member);
     }
 }

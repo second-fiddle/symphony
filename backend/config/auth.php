@@ -44,6 +44,10 @@ return [
             'driver' => 'token',
             'provider' => 'members',
         ],
+        'signup' => [
+            'driver' => 'session',
+            'provider' => 'temporary_members',
+        ]
     ],
 
     /*
@@ -65,9 +69,13 @@ return [
 
     'providers' => [
         'members' => [
-            'driver' => 'eloquentMember',
+            'driver' => 'eloquent',
             'model' => App\Models\Member::class,
         ],
+        'temporary_members' => [
+            'driver' => 'eloquentTemporaryMember',
+            'model' => App\Models\TemporaryMember::class,
+        ]
     ],
 
     /*
@@ -92,6 +100,12 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+        'temporary_members' => [
+            'provider' => 'temporary_members',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ]
     ],
 
     /*

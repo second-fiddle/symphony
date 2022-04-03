@@ -24,6 +24,7 @@ class CreateMembersTable extends Migration
             $table->string('email', 256)->comment('メールアドレス');
             $table->string('password', 60)->comment('パスワード');
             $table->timestamp('email_verified_at')->nullable()->comment('メールアドレス確認日時');
+            $table->string('remember_token', 100)->nullable()->comment('Remember Meトークン');
             $table->softDeletes();
             $table->dateTime('created_at')->useCurrent();
             $table->dateTime('updated_at')->useCurrentOnUpdate()->useCurrent();

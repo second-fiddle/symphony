@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Http\JsonResponseTrait;
+use App\Http\Dtos\Login\TokenDto;
 use App\Http\Requests\Api\Auth\SignupIdenifyRequest;
 use App\Http\Requests\Api\Auth\SignupProfileRequest;
 use App\Http\Requests\Api\Auth\SignupStoreRequest;
 use App\Services\Members\IStoreService;
 use App\Services\TemporaryMembers\IIdentifyService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * 会員登録コントローラー
@@ -34,6 +37,15 @@ class SignupController extends Controller
     ) {
         $this->identifyService = $identifyService;
         $this->storeService = $storeService;
+    }
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard('signup');
     }
     /**
      * 本人確認

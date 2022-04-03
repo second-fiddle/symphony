@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   passwordConfirmValidator,
   passwordValidator,
@@ -61,10 +61,11 @@ export const useProfile = (): [
 
   /**
    * 確認ボタンクリック
+   * @param e イベント
    */
-  const handleConfirm: SubmitHandler<FormValues> = async (formValues) => {
-    setResult(null);
-    try {
+  const handleConfirm: SubmitHandler<FormValues> = useCallback(
+    async (formValues, e) => {
+      e?.preventDefault();
       const reqParam = {
         ...formValues,
         ...{ temporaryMemberId: identifyInfo.temporaryMemberId },
@@ -74,13 +75,22 @@ export const useProfile = (): [
         .post('/api/signup/profile', {
           json: reqParam,
         })
-        .json<HttpResponse>();
-      setProfile(formValues);
-      navigate('/signup/confirm', { replace: true });
-    } catch (exception) {
-      setResult(<HttpResponse>exception);
-    }
-  };
+        .then(() => {
+          setProfile(formValues);
+          navigate('/signup/confirm', { replace: false });
+        })
+        .catch((error: HttpResponse) => {
+          if (error.status === 400) {
+            setResult(error);
+          } else if (error.status === 401) {
+            navigate('/signup/identify?timeout', { replace: true });
+          } else {
+            throw error;
+          }
+        });
+    },
+    [],
+  );
 
   return [control, handleSubmit, handleConfirm, result];
 };

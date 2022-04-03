@@ -1,9 +1,13 @@
 import { memo, VFC } from 'react';
-import { Link } from 'react-router-dom';
-import { Button, RhfEmailField, RhfPasswordField } from 'components/ui/inputs';
+import {
+  Button,
+  Link,
+  RhfEmailField,
+  RhfPasswordField,
+} from 'components/ui/inputs';
 import { Stack } from '@mui/material';
 import { AuthenticationLayout } from 'biz/layouts/authentication';
-import useLogin from './hooks/useLogin';
+import { useLogin } from './hooks/useLogin';
 
 /**
  * ログインページ
@@ -41,15 +45,11 @@ export const Login: VFC = memo(() => {
           <Button>ログイン</Button>
         </Stack>
         <div className="mt4">
-          <Link to="/reset-password" className="item">
-            パスワードを忘れた方はこちら
-          </Link>
+          <Link to="/reset-password">パスワードを忘れた方はこちら</Link>
         </div>
       </form>
       <div className="mt4">
-        <Link to="/signup/tos" className="item">
-          はじめての方はこちら
-        </Link>
+        <Link to="/signup/tos">はじめての方はこちら</Link>
       </div>
     </AuthenticationLayout>
   );

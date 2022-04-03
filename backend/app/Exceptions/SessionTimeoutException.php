@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -11,7 +12,7 @@ use Throwable;
  * @package   App\Exceptions
  * @version   1.0
  */
-class SessionTimeoutException extends ApplicationException
+class SessionTimeoutException extends RuntimeException
 {
     /**
      * コンストラクタ
@@ -21,8 +22,9 @@ class SessionTimeoutException extends ApplicationException
      * @param Throwable $exception 発生例外
      * @return void
      */
-    public function __construct(Throwable $exception)
+    public function __construct(Throwable $exception = null)
     {
-        parent::__construct($exception->getMessage(), Response::HTTP_REQUEST_TIMEOUT, $exception);
+        $message = $exception ? $exception->getMessage() : 'session timeout';
+        parent::__construct($message, Response::HTTP_REQUEST_TIMEOUT, $exception);
     }
 }

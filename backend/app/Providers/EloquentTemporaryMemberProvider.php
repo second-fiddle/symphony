@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Repositories\TemporaryMembers\Impl\TemporaryMembersRepository;
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 
@@ -11,7 +12,7 @@ use Illuminate\Contracts\Hashing\Hasher as HasherContract;
  * @package   App\Providers
  * @version   1.0
  */
-class EloquentMemberProvider extends EloquentUserProvider
+class EloquentTemporaryMemberProvider extends EloquentUserProvider
 {
     /**
      * Create a new database user provider.
@@ -24,5 +25,13 @@ class EloquentMemberProvider extends EloquentUserProvider
     public function __construct(HasherContract $hasher, $model)
     {
         parent::__construct($hasher, $model);
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function retrieveByCredentials(array $credentials)
+    {
+        $temporaryMembersRepository = app()->make(TemporaryMembersRepository::class);
+        return $temporaryMembersRepository->findByPropertyCdAndRoomNo($credentials['propertyCd'], $credentials['roomNo']);
     }
 }

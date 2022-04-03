@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Http\JsonResponseTrait;
 use App\Http\Requests\Api\Auth\LoginRequest;
