@@ -14,6 +14,7 @@ export const Button: FC<ButtonProps> = (props) => {
     fullWidth = true,
     disabled,
     href,
+    startIcon,
     onClick,
     children,
   } = props;
@@ -27,6 +28,7 @@ export const Button: FC<ButtonProps> = (props) => {
       fullWidth={fullWidth}
       disabled={disabled}
       href={href}
+      startIcon={startIcon}
       onClick={onClick}
     >
       {children}

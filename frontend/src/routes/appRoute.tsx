@@ -30,6 +30,8 @@ const SignupComplete = React.lazy(
 );
 const Verify = React.lazy(() => import('pages/authentication/verify/verify'));
 
+const NotFound = React.lazy(() => import('pages/notFoundPage'));
+
 export const AppRoute: VFC = () => (
   <Routes>
     <Route path="login" element={<Login />} />
@@ -47,5 +49,6 @@ export const AppRoute: VFC = () => (
     <Route path="/" element={<ProtectedRoutes />}>
       <Route path="" element={<DashboardPage />} />
     </Route>
+    <Route path="*" element={<NotFound />} />
   </Routes>
 );
