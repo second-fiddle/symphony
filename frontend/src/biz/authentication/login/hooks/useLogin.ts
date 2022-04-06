@@ -7,7 +7,7 @@ import {
   UseFormHandleSubmit,
 } from 'react-hook-form';
 import { useCallback, useEffect, useState } from 'react';
-import { httpClient, HttpResponse, HttpResult } from 'services/https'; // HttpResponse
+import { httpClient, HttpResult } from 'services/https';
 import { useLocation, useNavigate } from 'react-router';
 import { useSetRecoilState } from 'recoil';
 import { authAtom } from 'states/authAtom';
@@ -15,6 +15,8 @@ import {
   LocalStorageKey,
   setStoredInfo,
 } from 'services/resources/storages/localStorage';
+import { useErrorHandler } from 'react-error-boundary';
+import { requestLogin } from '../apis/requestLogin';
 
 type FormValues = {
   email: string;
@@ -42,6 +44,7 @@ export const useLogin = (): [
   });
   const navigate = useNavigate();
   const location = useLocation();
+  const handleError = useErrorHandler();
 
   const from = location.state?.from?.pathname || '/';
 
@@ -52,20 +55,22 @@ export const useLogin = (): [
   const handleLogin: SubmitHandler<FormValues> = useCallback(
     async (values, e) => {
       e?.preventDefault();
-      await httpClient.get('/sanctum/csrf-cookie');
-      await httpClient
-        .post('/api/login', {
-          json: values,
-        })
-        .then(async (response: HttpResponse) => {
-          const responseData = await response.json();
-          const authInfo = responseData.data;
+
+      try {
+        await httpClient.get('/sanctum/csrf-cookie');
+        const httpResponse = await requestLogin(values);
+        if (httpResponse.ok) {
+          const authInfo = httpResponse.data;
           setLoginInfo(authInfo);
           setStoredInfo(LocalStorageKey.Token, authInfo.token);
 
           navigate(from, { replace: true });
-        })
-        .catch((error: HttpResponse) => setResult(error));
+        } else {
+          setResult(httpResponse);
+        }
+      } catch (error) {
+        handleError(error);
+      }
     },
     [],
   );
@@ -78,13 +83,6 @@ export const useLogin = (): [
       setResult({
         result: 'success',
         message: 'パスワードの変更を行いました。',
-      });
-    } else if (query.has('sessionTimeout')) {
-      // TODO セッションタイムアウトページ作る(ErrorBoundaryで対応)
-      setResult({
-        result: 'success',
-        message:
-          '長時間操作が行われなかったため、自動的にログアウトされました。',
       });
     }
   }, []);

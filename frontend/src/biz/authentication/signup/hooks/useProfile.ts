@@ -11,10 +11,13 @@ import {
   useForm,
   UseFormHandleSubmit,
 } from 'react-hook-form';
-import { httpClient, HttpResponse, HttpResult } from 'services/https';
+import { HttpResult } from 'services/https';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router';
+import { StatusCodes } from 'http-status-codes';
+import { useErrorHandler } from 'react-error-boundary';
 import { signupIdentifyAtom, signupProfileAtom } from '../states/signupAtom';
+import { requestProfile } from '../apis/requestProfile';
 
 type FormValues = {
   email: string;
@@ -58,6 +61,7 @@ export const useProfile = (): [
   const { control, handleSubmit } = useForm<FormValues>({
     resolver: yupResolver(schema),
   });
+  const handleError = useErrorHandler();
 
   /**
    * 確認ボタンクリック
@@ -66,28 +70,25 @@ export const useProfile = (): [
   const handleConfirm: SubmitHandler<FormValues> = useCallback(
     async (formValues, e) => {
       e?.preventDefault();
+
       const reqParam = {
         ...formValues,
         ...{ temporaryMemberId: identifyInfo.temporaryMemberId },
         ...{ password_confirmation: formValues.confirmPassword },
       };
-      await httpClient
-        .post('/api/signup/profile', {
-          json: reqParam,
-        })
-        .then(() => {
+      try {
+        const httpResponse = await requestProfile(reqParam);
+        if (httpResponse.ok) {
           setProfile(formValues);
           navigate('/signup/confirm', { replace: false });
-        })
-        .catch((error: HttpResponse) => {
-          if (error.status === 400) {
-            setResult(error);
-          } else if (error.status === 401) {
-            navigate('/signup/identify?timeout', { replace: true });
-          } else {
-            throw error;
-          }
-        });
+        } else if (httpResponse.status === StatusCodes.UNAUTHORIZED) {
+          navigate('/signup/identify?timeout', { replace: true });
+        } else {
+          setResult(httpResponse);
+        }
+      } catch (error) {
+        handleError(error);
+      }
     },
     [],
   );

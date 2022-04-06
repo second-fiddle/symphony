@@ -25,7 +25,7 @@ export const useTos = (): [
    * 同意するボタンクリック
    * @param e イベント
    */
-  const handleSubmit = useCallback((e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!agree) {
       return;
@@ -33,7 +33,7 @@ export const useTos = (): [
 
     setAgreed(agree);
     navigate('/signup/identify', { replace: true });
-  }, []);
+  };
 
   return [agree, handleAgreeChange, handleSubmit];
 };

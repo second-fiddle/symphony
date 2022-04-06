@@ -1,13 +1,16 @@
 import React, { FormEvent, useCallback, useState } from 'react';
-import { httpClient, HttpResult } from 'services/https';
+import { HttpResult } from 'services/https';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router';
 import { Member } from 'models/member';
+import { useErrorHandler } from 'react-error-boundary';
+import { StatusCodes } from 'http-status-codes';
 import {
   signupIdentifyAtom,
   signupProfileAtom,
   signupCompleteAtom,
 } from '../states/signupAtom';
+import { requestProfileConfirm } from '../apis/requestProfileConfirm';
 
 /**
  * プロフィール入力画面のイベントを定義します。
@@ -21,6 +24,7 @@ export const useProfileConfirm = (): [
   const identifyInfo = useRecoilValue(signupIdentifyAtom);
   const setComplete = useSetRecoilState(signupCompleteAtom);
   const [result, setResult] = useState<HttpResult | null>(null);
+  const handleError = useErrorHandler();
 
   /**
    * 確認ボタンクリック
@@ -33,24 +37,21 @@ export const useProfileConfirm = (): [
       ...{ temporaryMemberId: identifyInfo.temporaryMemberId },
       ...{ password_confirmation: profile.confirmPassword },
     };
-    await httpClient
-      .post('/api/signup/register', {
-        json: reqParam,
-      })
-      .then(() => {
+
+    try {
+      const httpResponse = await requestProfileConfirm(reqParam);
+      if (httpResponse.ok) {
         setComplete(true);
         navigate('/signup/complete', { replace: true });
-      })
-      .catch((error) => {
-        if (error.status === 400) {
-          setResult(error);
-        } else if (error.status === 401) {
-          setProfile({} as Member);
-          navigate('/signup/identify?timeout', { replace: true });
-        } else {
-          throw error;
-        }
-      });
+      } else if (httpResponse.status === StatusCodes.UNAUTHORIZED) {
+        setProfile({} as Member);
+        navigate('/signup/identify?timeout', { replace: true });
+      } else {
+        setResult(httpResponse);
+      }
+    } catch (error) {
+      handleError(error);
+    }
   }, []);
 
   return [handleConfirm, result];

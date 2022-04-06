@@ -7,7 +7,9 @@ import {
   UseFormHandleSubmit,
 } from 'react-hook-form';
 import { useCallback, useState } from 'react';
-import { httpClient, HttpResponse, HttpResult } from 'services/https';
+import { HttpResult } from 'services/https';
+import { useErrorHandler } from 'react-error-boundary';
+import { requestResetPassword } from '../apis/requestResetPassword';
 
 type FormValues = {
   email: string;
@@ -27,10 +29,10 @@ export const useResetPassword = (): [
   HttpResult | null,
 ] => {
   const [result, setResult] = useState<HttpResult | null>(null);
-
   const { control, handleSubmit } = useForm<FormValues>({
     resolver: yupResolver(schema),
   });
+  const handleError = useErrorHandler();
 
   /**
    * 送信ボタンクリック
@@ -41,15 +43,12 @@ export const useResetPassword = (): [
     async (values, e) => {
       e?.preventDefault();
 
-      await httpClient
-        .post('/api/reset-password', {
-          json: values,
-        })
-        .then(async (response: HttpResponse) => {
-          const responseData = await response.json();
-          setResult(responseData);
-        })
-        .catch((error: HttpResponse) => setResult(error));
+      try {
+        const httpResponse = await requestResetPassword(values);
+        setResult(httpResponse);
+      } catch (error) {
+        handleError(error);
+      }
     },
     [],
   );

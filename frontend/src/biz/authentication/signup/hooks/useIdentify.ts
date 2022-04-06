@@ -7,7 +7,7 @@ import {
   UseFormHandleSubmit,
 } from 'react-hook-form';
 import { useCallback, useEffect, useState } from 'react';
-import { httpClient, HttpResponse, HttpResult } from 'services/https';
+import { HttpResult } from 'services/https';
 import { useSetRecoilState } from 'recoil';
 import { IdentifyInfo } from 'models/identifyInfo';
 import {
@@ -15,7 +15,9 @@ import {
   setStoredInfo,
 } from 'services/resources/storages/localStorage';
 import { useNavigate } from 'react-router';
+import { useErrorHandler } from 'react-error-boundary';
 import { signupIdentifyAtom } from '../states/signupAtom';
+import { requestIdentify } from '../apis/requestIdentify';
 
 type FormValues = {
   propertyCd: string;
@@ -44,6 +46,7 @@ export const useIdentify = (): [
   const { control, handleSubmit } = useForm<FormValues>({
     resolver: yupResolver(schema),
   });
+  const handleError = useErrorHandler();
 
   /**
    * 確認ボタンクリック
@@ -53,17 +56,19 @@ export const useIdentify = (): [
     async (formValues, e) => {
       e?.preventDefault();
 
-      await httpClient
-        .post('/api/signup/identify', {
-          json: formValues,
-        })
-        .then(async (response: HttpResponse) => {
-          const responseData = await response.json();
-          setIdentifyInfo(responseData.data);
-          setStoredInfo(LocalStorageKey.Token, responseData.data.token);
+      try {
+        const httpResponse = await requestIdentify(formValues);
+        if (httpResponse.ok) {
+          const identify = httpResponse.data;
+          setIdentifyInfo(identify);
+          setStoredInfo(LocalStorageKey.Token, identify.token);
           navigate('/signup/profile', { replace: false });
-        })
-        .catch((error: HttpResponse) => setResult(error));
+        } else {
+          setResult(httpResponse);
+        }
+      } catch (error) {
+        handleError(error);
+      }
     },
     [],
   );

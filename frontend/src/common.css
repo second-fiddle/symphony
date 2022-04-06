@@ -13,3 +13,7 @@
 .m0a {
   margin: 0 auto;
 }
+
+button.danger {
+  background-color: #c54949;
+}

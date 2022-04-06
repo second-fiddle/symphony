@@ -6,6 +6,7 @@ export type HttpResultType = 'error' | 'warning' | 'info' | 'success';
  * HTTPレスポンス
  */
 export type HttpResult = {
+  ok?: boolean;
   status?: number;
   result?: HttpResultType;
   data?: any; // eslint-disable-line
@@ -17,29 +18,18 @@ export type HttpResult = {
  */
 export type HttpResponse = HttpResult & Response;
 /**
- * Httpリクエスト成功時のオブジェクトを作成する
+ * Httpレスポンスオブジェクトを作成する
+ * @param ok boolean Httpリクエスト結果(true / false)
  * @param response レスポンス
  * @returns Httpレスポンス
  */
-export const createSuccessResponse = (response): HttpResponse => {
-  const success = <HttpResponse>{};
-  success.result = 'success';
-  success.data = response.data;
-  success.message = response.message;
+export const createResponse = (ok: boolean, response): HttpResponse => {
+  const httpResponse = <HttpResponse>{};
+  httpResponse.status = response.status;
+  httpResponse.result = ok ? 'success' : 'error';
+  httpResponse.data = ok ? response.data : null;
+  httpResponse.message = response.message;
+  httpResponse.errors = !ok ? response.data : null;
 
-  return success;
-};
-/**
- * Httpリクエスト失敗時のオブジェクトを作成する
- * @param response レスポンス
- * @returns Httpレスポンス
- */
-export const createErrorResponse = (response): HttpResponse => {
-  const error = <HttpResponse>{};
-  error.status = response.status;
-  error.result = 'error';
-  error.message = response.message;
-  error.errors = response.data;
-
-  return error;
+  return httpResponse;
 };

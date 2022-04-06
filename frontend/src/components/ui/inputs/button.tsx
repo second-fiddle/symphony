@@ -10,11 +10,13 @@ export const Button: FC<ButtonProps> = (props) => {
     id,
     name,
     type = 'submit',
+    className,
     variant = 'contained',
     fullWidth = true,
     disabled,
     href,
     startIcon,
+    color,
     onClick,
     children,
   } = props;
@@ -24,6 +26,8 @@ export const Button: FC<ButtonProps> = (props) => {
       id={id}
       name={name}
       type={type}
+      className={className}
+      color={color}
       variant={variant}
       fullWidth={fullWidth}
       disabled={disabled}

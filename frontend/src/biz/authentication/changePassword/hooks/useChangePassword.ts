@@ -7,8 +7,10 @@ import {
   UseFormHandleSubmit,
 } from 'react-hook-form';
 import { useCallback, useEffect, useState } from 'react';
-import { httpClient, HttpResponse, HttpResult } from 'services/https';
+import { httpClient, HttpResult } from 'services/https';
 import { useNavigate } from 'react-router';
+import { useErrorHandler } from 'react-error-boundary';
+import { requestChangePassword } from '../apis/requestChangePassword';
 
 type FormValues = {
   password: string;
@@ -42,10 +44,10 @@ export const useChangePassword = (): [
   const [email, setEmail] = useState<string | null>();
   const [token, setToken] = useState<string | null>();
   const [result, setResult] = useState<HttpResult | null>(null);
-
   const { control, handleSubmit } = useForm<FormValues>({
     resolver: yupResolver(schema),
   });
+  const handleError = useErrorHandler();
 
   /**
    * 送信ボタンクリック
@@ -55,19 +57,26 @@ export const useChangePassword = (): [
   const handleSend: SubmitHandler<FormValues> = useCallback(
     async (values, e) => {
       e?.preventDefault();
-      await httpClient
-        .post('/api/change-password', {
-          json: {
-            password: values.password,
-            password_confirmation: values.confirmPassword,
-            email,
-            token,
-          },
-        })
-        .then(() => navigate('/login?changePassword=', { replace: true }))
-        .catch((error: HttpResponse) => setResult(error));
+      try {
+        await httpClient.get('/sanctum/csrf-cookie');
+
+        const params = {
+          password: values.password,
+          password_confirmation: values.confirmPassword,
+          email,
+          token,
+        };
+        const httpResponse = await requestChangePassword(params);
+        if (httpResponse.ok) {
+          navigate('/login?changePassword=', { replace: true });
+        } else {
+          setResult(httpResponse);
+        }
+      } catch (error) {
+        handleError(error);
+      }
     },
-    [],
+    [email, token],
   );
   /**
    * 初期表示
