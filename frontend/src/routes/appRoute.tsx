@@ -30,7 +30,7 @@ const SignupComplete = React.lazy(
 );
 const Verify = React.lazy(() => import('pages/authentication/verify/verify'));
 
-const NotFound = React.lazy(() => import('pages/notFoundPage'));
+const NotFound = React.lazy(() => import('pages/404'));
 
 export const AppRoute: VFC = () => (
   <Routes>

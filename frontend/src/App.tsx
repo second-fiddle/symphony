@@ -4,7 +4,7 @@ import { FullpageCircularProgress } from 'components/ui/notifications';
 import { Header } from 'biz/layouts/header';
 import { AppRoute } from 'routes/appRoute';
 import { ErrorBoundary } from 'react-error-boundary';
-import { ErrorFallback } from 'components/biz/ErrorFallback';
+import { ErrorFallback } from 'pages/500';
 
 const App: VFC = () => {
   const { hash, pathname } = useLocation();
