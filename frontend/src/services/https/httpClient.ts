@@ -98,7 +98,7 @@ export class httpService {
    */
   static post = async (
     url,
-    params,
+    params = {},
     catchCallback?: (error) => HttpResponse,
   ): Promise<HttpResponse> => {
     const httpResponse = await httpClient

@@ -13,13 +13,12 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { AccountCircle } from '@mui/icons-material';
 import { useRecoilState } from 'recoil';
 import { authAtom } from 'states/authAtom';
-import { Navigate } from 'react-router';
 import { useLogout } from './hooks/useLogout';
 
 export const Header: VFC = memo(() => {
   const [loginInfo] = useRecoilState(authAtom);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [handleLogout, resultLogout] = useLogout();
+  const [handleLogout] = useLogout();
 
   const handleMenu = useCallback((event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -27,13 +26,6 @@ export const Header: VFC = memo(() => {
   const handleClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
-
-  if (resultLogout === 'success') {
-    return <Navigate to="/login" />;
-  }
-  if (resultLogout === 'sessionTimeout') {
-    return <Navigate to="/login?sessionTimeout=" />;
-  }
 
   return (
     <AppBar position="static">
