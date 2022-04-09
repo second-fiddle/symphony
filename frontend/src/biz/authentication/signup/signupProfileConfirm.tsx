@@ -1,12 +1,10 @@
 import { memo, VFC } from 'react';
 import { Grid } from '@mui/material';
-import { useRecoilValue } from 'recoil';
 import styled from '@emotion/styled';
 import { format } from 'services/utils/TelUtil';
 import { Alert } from 'components/ui/notifications';
 import { Button } from 'components/ui/inputs';
 import { useProfileConfirm } from './hooks/useProfileConfirm';
-import { signupProfileAtom, signupIdentifyAtom } from './states/signupAtom';
 import { Signup } from './signup';
 
 const SGrid = styled(Grid)`
@@ -17,9 +15,7 @@ const SGrid = styled(Grid)`
  * ユーザープロフィール入力確認ページ
  */
 export const SignupProfileConfirm: VFC = memo(() => {
-  const identifyInfo = useRecoilValue(signupIdentifyAtom);
-  const profile = useRecoilValue(signupProfileAtom);
-  const [handleConfirm, httpResponse] = useProfileConfirm();
+  const [handleConfirm, identify, profile, httpResponse] = useProfileConfirm();
 
   return (
     <Signup>
@@ -30,7 +26,7 @@ export const SignupProfileConfirm: VFC = memo(() => {
         />
         <Grid container spacing={2}>
           <SGrid item xs={12}>
-            {identifyInfo.propertyName} {identifyInfo.roomNo}
+            {identify.propertyName} {identify.roomNo}
           </SGrid>
           <SGrid item xs={6}>
             メールアドレス

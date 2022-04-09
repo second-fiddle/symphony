@@ -8,18 +8,21 @@ import {
 } from 'components/ui/inputs';
 import { Box, Stack } from '@mui/material';
 import { Alert } from 'components/ui/notifications';
-import { useRecoilValue } from 'recoil';
 import { useProfile } from './hooks/useProfile';
-import { signupIdentifyAtom, signupProfileAtom } from './states/signupAtom';
 import { Signup } from './signup';
 
 /**
  * ユーザープロフィール入力ページ
  */
 export const SignupProfile: VFC = memo(() => {
-  const identifyInfo = useRecoilValue(signupIdentifyAtom);
-  const profile = useRecoilValue(signupProfileAtom);
-  const [control, handleSubmit, handleConfirm, httpResponse] = useProfile();
+  const [
+    control,
+    handleSubmit,
+    handleConfirm,
+    identifyInfo,
+    profile,
+    httpResponse,
+  ] = useProfile();
 
   return (
     <Signup>

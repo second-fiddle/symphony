@@ -6,17 +6,16 @@ import {
   useForm,
   UseFormHandleSubmit,
 } from 'react-hook-form';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { HttpResult } from 'services/https';
 import { useSetRecoilState } from 'recoil';
-import { IdentifyInfo } from 'models/identifyInfo';
 import {
   LocalStorageKey,
   setStoredInfo,
 } from 'services/resources/storages/localStorage';
 import { useNavigate } from 'react-router';
 import { useErrorHandler } from 'react-error-boundary';
-import { signupIdentifyAtom } from '../states/signupAtom';
+import { signupSelector } from '../states/signupAtom';
 import { requestIdentify } from '../apis/requestIdentify';
 
 type FormValues = {
@@ -41,7 +40,7 @@ export const useIdentify = (): [
   HttpResult | null,
 ] => {
   const navigate = useNavigate();
-  const setIdentifyInfo = useSetRecoilState<IdentifyInfo>(signupIdentifyAtom);
+  const setIdentifyInfo = useSetRecoilState(signupSelector);
   const [result, setResult] = useState<HttpResult | null>(null);
   const { control, handleSubmit } = useForm<FormValues>({
     resolver: yupResolver(schema),
@@ -60,7 +59,7 @@ export const useIdentify = (): [
         const httpResponse = await requestIdentify(formValues);
         if (httpResponse.ok) {
           const identify = httpResponse.data;
-          setIdentifyInfo(identify);
+          setIdentifyInfo({ identify });
           setStoredInfo(LocalStorageKey.Token, identify.token);
           navigate('/signup/profile', { replace: false });
         } else {
@@ -72,20 +71,6 @@ export const useIdentify = (): [
     },
     [],
   );
-
-  /**
-   * 初期表示
-   */
-  useEffect(() => {
-    const query = new URLSearchParams(window.location.search);
-    if (query.has('timeout')) {
-      setResult({
-        result: 'error',
-        message:
-          'セッションタイムアウトが発生しました。\\n再度本人確認から行ってください。',
-      });
-    }
-  }, []);
 
   return [control, handleSubmit, handleConfirm, result];
 };

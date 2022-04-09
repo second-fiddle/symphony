@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { useRecoilValue } from 'recoil';
-import { signupAgreeAtom, signupCompleteAtom } from '../states/signupAtom';
+import { useRecoilState } from 'recoil';
+import { signupSelector } from '../states/signupAtom';
 
 type Page = {
   title: string;
@@ -39,11 +39,11 @@ const pageDefines: PageDefine = {
  */
 export const useSignup = (): [Page, () => void] => {
   const navigate = useNavigate();
-  const agreed = useRecoilValue(signupAgreeAtom);
-  const complete = useRecoilValue(signupCompleteAtom);
+  const [signup, setSignup] = useRecoilState(signupSelector);
   const location = useLocation();
   const path = location.pathname.replace('/signup/', '') ?? 'tos';
   const pageDefine = pageDefines[path];
+
   /**
    * 戻るリンク
    */
@@ -54,9 +54,16 @@ export const useSignup = (): [Page, () => void] => {
   }, []);
 
   useEffect(() => {
-    if (complete) {
-      navigate('/signup/complete', { state: { x: 1 }, replace: true });
-    } else if (path !== 'tos' && !agreed) {
+    if (path === 'tos' || path === 'complete') {
+      setSignup({
+        agree: false,
+        identify: {},
+        profile: {},
+        complete: false,
+      });
+    }
+
+    if (path !== 'tos' && !signup.agree) {
       navigate('/signup/tos', { replace: true });
     }
   }, []);

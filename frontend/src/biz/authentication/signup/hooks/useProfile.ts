@@ -12,11 +12,13 @@ import {
   UseFormHandleSubmit,
 } from 'react-hook-form';
 import { HttpResult } from 'services/https';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router';
 import { StatusCodes } from 'http-status-codes';
 import { useErrorHandler } from 'react-error-boundary';
-import { signupIdentifyAtom, signupProfileAtom } from '../states/signupAtom';
+import { IdentifyInfo } from 'models/identifyInfo';
+import { Member } from 'models/member';
+import { signupSelector } from '../states/signupAtom';
 import { requestProfile } from '../apis/requestProfile';
 
 type FormValues = {
@@ -52,11 +54,12 @@ export const useProfile = (): [
   Control<FormValues>,
   UseFormHandleSubmit<FormValues>,
   (data: FormValues) => void,
+  IdentifyInfo,
+  Member,
   HttpResult | null,
 ] => {
   const navigate = useNavigate();
-  const identifyInfo = useRecoilValue(signupIdentifyAtom);
-  const setProfile = useSetRecoilState(signupProfileAtom);
+  const [{ identify, profile }, setSignup] = useRecoilState(signupSelector);
   const [result, setResult] = useState<HttpResult | null>(null);
   const { control, handleSubmit } = useForm<FormValues>({
     resolver: yupResolver(schema),
@@ -73,16 +76,18 @@ export const useProfile = (): [
 
       const reqParam = {
         ...formValues,
-        ...{ temporaryMemberId: identifyInfo.temporaryMemberId },
+        ...{ temporaryMemberId: identify.temporaryMemberId },
         ...{ password_confirmation: formValues.confirmPassword },
       };
       try {
         const httpResponse = await requestProfile(reqParam);
         if (httpResponse.ok) {
-          setProfile(formValues);
+          setSignup({
+            profile: formValues,
+          });
           navigate('/signup/confirm', { replace: false });
         } else if (httpResponse.status === StatusCodes.UNAUTHORIZED) {
-          navigate('/signup/identify?timeout', { replace: true });
+          navigate('/signup/tos?timeout', { replace: true });
         } else {
           setResult(httpResponse);
         }
@@ -93,5 +98,12 @@ export const useProfile = (): [
     [],
   );
 
-  return [control, handleSubmit, handleConfirm, result];
+  return [
+    control,
+    handleSubmit,
+    handleConfirm,
+    <IdentifyInfo>identify,
+    <Member>profile,
+    result,
+  ];
 };

@@ -1,28 +1,26 @@
-import React, { FormEvent, useCallback, useState } from 'react';
+import React, { FormEvent, useCallback, useEffect, useState } from 'react';
 import { HttpResult } from 'services/https';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router';
 import { Member } from 'models/member';
 import { useErrorHandler } from 'react-error-boundary';
 import { StatusCodes } from 'http-status-codes';
-import {
-  signupIdentifyAtom,
-  signupProfileAtom,
-  signupCompleteAtom,
-} from '../states/signupAtom';
+import { IdentifyInfo } from 'models/identifyInfo';
+import { omit } from 'lodash';
 import { requestProfileConfirm } from '../apis/requestProfileConfirm';
+import { signupSelector } from '../states/signupAtom';
 
 /**
  * プロフィール入力画面のイベントを定義します。
  */
 export const useProfileConfirm = (): [
   (e: React.FormEvent) => void,
+  IdentifyInfo,
+  Member,
   HttpResult | null,
 ] => {
   const navigate = useNavigate();
-  const [profile, setProfile] = useRecoilState(signupProfileAtom);
-  const identifyInfo = useRecoilValue(signupIdentifyAtom);
-  const setComplete = useSetRecoilState(signupCompleteAtom);
+  const [{ identify, profile }, setSignup] = useRecoilState(signupSelector);
   const [result, setResult] = useState<HttpResult | null>(null);
   const handleError = useErrorHandler();
 
@@ -34,18 +32,17 @@ export const useProfileConfirm = (): [
     e.preventDefault();
     const reqParam = {
       ...profile,
-      ...{ temporaryMemberId: identifyInfo.temporaryMemberId },
+      ...{ temporaryMemberId: identify.temporaryMemberId },
       ...{ password_confirmation: profile.confirmPassword },
     };
 
     try {
       const httpResponse = await requestProfileConfirm(reqParam);
       if (httpResponse.ok) {
-        setComplete(true);
+        setSignup({ complete: true });
         navigate('/signup/complete', { replace: true });
       } else if (httpResponse.status === StatusCodes.UNAUTHORIZED) {
-        setProfile({} as Member);
-        navigate('/signup/identify?timeout', { replace: true });
+        navigate('/signup/tos?timeout=', { replace: true });
       } else {
         setResult(httpResponse);
       }
@@ -54,5 +51,12 @@ export const useProfileConfirm = (): [
     }
   }, []);
 
-  return [handleConfirm, result];
+  /**
+   * 画面表示時、パスワードを削除
+   */
+  useEffect(() => {
+    setSignup({ profile: omit(profile, ['password', 'confirmPassword']) });
+  }, []);
+
+  return [handleConfirm, <IdentifyInfo>identify, <Member>profile, result];
 };

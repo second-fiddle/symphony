@@ -79,11 +79,14 @@ export class httpService {
         return response;
       })
       .catch((error: HttpResponse) => {
+        if (catchCallback) {
+          return catchCallback(error);
+        }
         if (error.status !== StatusCodes.BAD_REQUEST) {
           throw error;
         }
 
-        return catchCallback ? catchCallback(error) : error;
+        return error;
       });
 
     return httpResponse;

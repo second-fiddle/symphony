@@ -7,7 +7,10 @@ import { HttpResponse, httpService } from 'services/https';
  * @returns Httpレスポンス
  */
 const catchCallback = (error: HttpResponse) => {
-  if (error.status === StatusCodes.UNAUTHORIZED) {
+  if (
+    error.status === StatusCodes.UNAUTHORIZED ||
+    error.status === StatusCodes.BAD_REQUEST
+  ) {
     return error;
   }
   throw error;

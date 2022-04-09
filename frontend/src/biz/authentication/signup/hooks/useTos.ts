@@ -1,7 +1,8 @@
-import { ChangeEvent, useCallback, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useSetRecoilState } from 'recoil';
-import { signupAgreeAtom } from '../states/signupAtom';
+import { HttpResult } from 'services/https';
+import { signupSelector } from '../states/signupAtom';
 
 /**
  * 利用規約画面のイベントを定義します。
@@ -10,10 +11,13 @@ export const useTos = (): [
   boolean,
   (event: ChangeEvent<HTMLInputElement>) => void,
   (e: React.FormEvent) => void,
+  HttpResult | null,
 ] => {
   const navigate = useNavigate();
   const [agree, setAgree] = useState(false);
-  const setAgreed = useSetRecoilState(signupAgreeAtom);
+  const [result, setResult] = useState<HttpResult | null>(null);
+  const setSignup = useSetRecoilState(signupSelector);
+
   /**
    * 利用規約に同意するチェック状態変更ハンドラー
    * @param e イベント
@@ -31,9 +35,20 @@ export const useTos = (): [
       return;
     }
 
-    setAgreed(agree);
+    setSignup({ agree });
     navigate('/signup/identify', { replace: true });
   };
 
-  return [agree, handleAgreeChange, handleSubmit];
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    if (query.has('timeout')) {
+      setResult({
+        result: 'error',
+        message:
+          'セッションタイムアウトが発生しました。\\n再度行ってください。',
+      });
+    }
+  });
+
+  return [agree, handleAgreeChange, handleSubmit, result];
 };

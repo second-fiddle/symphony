@@ -1,30 +1,59 @@
+import { has } from 'lodash';
 import { IdentifyInfo } from 'models/identifyInfo';
 import { Member } from 'models/member';
-import { atom } from 'recoil';
+import { atom, selector } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
 const { persistAtom } = recoilPersist();
 
-export const signupAgreeAtom = atom<boolean>({
-  key: 'signup.agree',
+const agreeState = atom({
+  key: 'signup.agree.state',
   default: false,
   effects: [persistAtom],
 });
-
-export const signupIdentifyAtom = atom<IdentifyInfo>({
-  key: 'signup.identifyInfo',
+const identifyState = atom({
+  key: 'signup.identify.state',
   default: {} as IdentifyInfo,
   effects: [persistAtom],
 });
-
-export const signupProfileAtom = atom<Member>({
-  key: 'signup.profile',
+const profileState = atom({
+  key: 'signup.profile.state',
   default: {} as Member,
   effects: [persistAtom],
 });
-
-export const signupCompleteAtom = atom<boolean>({
-  key: 'signup.complete',
+const completeSate = atom({
+  key: 'signpu.complete.state',
   default: false,
   effects: [persistAtom],
+});
+
+export const signupSelector = selector({
+  key: 'signupSelector',
+  get: ({ get }) => {
+    const agree = get(agreeState);
+    const identify = get(identifyState);
+    const profile = get(profileState);
+    const complete = get(completeSate);
+
+    return { agree, identify, profile, complete };
+  },
+  set: (
+    { set },
+    value: {
+      [key: string]: any;
+    },
+  ) => {
+    if (has(value, 'agree')) {
+      set(agreeState, value.agree);
+    }
+    if (has(value, 'identify')) {
+      set(identifyState, value.identify);
+    }
+    if (has(value, 'profile')) {
+      set(profileState, value.profile);
+    }
+    if (has(value, 'complete')) {
+      set(completeSate, value.complete);
+    }
+  },
 });
