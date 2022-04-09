@@ -2,63 +2,74 @@
 
 namespace App\Exceptions;
 
-use Exception;
-use Throwable;
+use App\Helpers\Message;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Session\TokenMismatchException;
+use Exception;
+use Throwable;
 
-use App\Helpers\Utils\SystemHelper;
-
-use Illuminate\Support\Facades\Log;
-
+/**
+ * 例外ハンドラー
+ *
+ * @package   App\Exceptions
+ * @version   1.0
+ */
 class Handler extends ExceptionHandler
 {
     /**
      * A list of the exception types that are not reported.
      *
+     * @access protected
      * @var string[]
      */
     protected $dontReport = [
-    //
-  ];
+    ];
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
      *
+     * @access protected
      * @var string[]
      */
     protected $dontFlash = [
-    'current_password',
-    'password',
-    'password_confirmation',
-  ];
+        'current_password',
+        'password',
+        'password_confirmation',
+    ];
 
     /**
      * Register the exception handling callbacks for the application.
      *
+     * @access public
      * @return void
      */
     public function register()
     {
         $this->renderable(function (Exception $exception, $request) {
-            Log::error($exception);
-
             if ($request->is('api/*')) {
                 $status = 400;
                 // HTTP系例外が発生した場合
                 if ($this->isHttpException($exception)) {
-                    $status = $exception->getStatusCode();
+                    $status = $exception->getCode();
                 }
                 // Responsableインターフェースを継承したクラスはここでレスポンスを返す
-                if ($exception instanceof ApplicationException) {
+                if ($exception instanceof TokenMismatchException ||
+                    $exception instanceof SessionTimeoutException) {
+                    return $this->toResponse($exception->getMessage(), Response::HTTP_REQUEST_TIMEOUT);
+                } elseif ($exception instanceof ApplicationException) {
                     return $this->toResponse($exception->getMessage(), $exception->getCode());
                 } elseif ($exception instanceof ValidationException) {
-                    $errors = json_encode($exception->errors(), JSON_UNESCAPED_UNICODE);
-                    return $this->toResponse(SystemHelper::getMessage('messages.E.inputerr'), $status, $errors);
+                    $errors = $exception->errors();
+                    return $this->toResponse(Message::getMessage('messages.E.inputerr'), $status, $errors);
+                } elseif ($exception instanceof AuthenticationException) {
+                    return $this->toResponse($exception->getMessage(), Response::HTTP_UNAUTHORIZED);
                 }
+
                 // それ以外の場合は Internal Server Error とする
-                return $this->toResponse(SystemHelper::getMessage('messages.E.systemerr'), Response::HTTP_INTERNAL_SERVER_ERROR);
+                return $this->toResponse(Message::getMessage('messages.E.systemerr'), Response::HTTP_INTERNAL_SERVER_ERROR);
             }
         });
         $this->reportable(function (Throwable $e) {
@@ -67,16 +78,18 @@ class Handler extends ExceptionHandler
     }
     /**
      * レスポンスを生成する。
-     * @param string|array $message
-     * @param int $status
-     * @param string $details
+     *
+     * @access protected
+     * @param string|array $message メッセージ
+     * @param int $status httpステータス
+     * @param string $data レスポンスデータ
      */
-    protected function toResponse($message, int $status, $details = '')
+    protected function toResponse($message, int $status, $data = '')
     {
         return response()->json([
             'status'  => $status,
             'message' => $message,
-            'data'    => $details
+            'data'    => $data
         ], $status);
     }
 }

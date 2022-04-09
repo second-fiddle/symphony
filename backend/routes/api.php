@@ -1,12 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\Auth\SignupController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Auth\LoginController;
-use App\Http\Controllers\Api\UserController;
 
 /*
-|--------------------------------------------------------------------------
+|-----------------------W---------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
 |
@@ -16,13 +14,14 @@ use App\Http\Controllers\Api\UserController;
 |
 */
 
-Route::middleware('api')->group(function () {
-    Route::post('login', [LoginController::class, 'login'])->name('login');
-    Route::get('logout', [LoginController::class, 'logout']);
-    Route::post('logout', [LoginController::class, 'logout']);
-    Route::get('users/me', [UserController::class, 'show']);
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('signup')->group(function () {
+    Route::post('identify', [SignupController::class, 'identify']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('profile', [SignupController::class, 'profile']);
+        Route::post('register', [SignupController::class, 'register']);
+    });
 });

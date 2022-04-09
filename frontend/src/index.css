@@ -1,3 +1,10 @@
+@import url(http://fonts.googleapis.com/earlyaccess/notosansjp.css);
+
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
   font-family:
@@ -11,7 +18,9 @@ body {
     'Fira Sans',
     'Droid Sans',
     'Helvetica Neue',
+    'Noto Sans JP',
     sans-serif;
+  color: var(--black-70);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

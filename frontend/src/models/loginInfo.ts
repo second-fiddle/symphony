@@ -1,9 +1,14 @@
-import { User } from './user';
-
 /**
  * ログイン情報
  */
 export type LoginInfo = {
-  token?: string;
-  user?: User;
+  id: number;
+  lastName: string;
+  firstName: string;
+  lastNameRuby: string;
+  firstNameRuby: string;
+  nickName: string;
+  tel1: string;
+  tel2: string;
+  email: string;
 };

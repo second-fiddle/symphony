@@ -6,7 +6,9 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
-use App\Providers\EloquentUserExMemberProvider;
+use App\Providers\EloquentTemporaryMemberProvider;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Notifications\Messages\MailMessage;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -29,8 +31,8 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         //カスタムProvider
-        Auth::provider('eloquentUserExMember', function($app, array $config) {
-            return new EloquentUserExMemberProvider($app['hash'], $config['model']);
+        Auth::provider('eloquentTemporaryMember', function ($app, array $config) {
+            return new EloquentTemporaryMemberProvider($app['hash'], $config['model']);
         });
     }
 }

@@ -1,0 +1,22 @@
+{
+  "recommendations": [
+    "coenraads.bracket-pair-colorizer-2",
+    "ms-azuretools.vscode-docker",
+    "dsznajder.es7-react-js-snippets",
+    "dbaeumer.vscode-eslint",
+    "donjayamanne.githistory",
+    "tht13.html-preview-vscode",
+    "wix.vscode-import-cost",
+    "oderwat.indent-rainbow",
+    "ms-ceintl.vscode-language-pack-ja",
+    "yzane.markdown-pdf",
+    "junstyle.php-cs-fixer",
+    "neilbrayfield.php-docblocker",
+    "bmewburn.vscode-intelephense-client",
+    "ms-vscode-remote.remote-wsl",
+    "stylelint.vscode-stylelint",
+    "visualstudioexptteam.vscodeintellicode",
+    "vscode-icons-team.vscode-icons",
+    "mosapride.zenkaku"
+  ]
+}

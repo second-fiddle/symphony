@@ -1,6 +1,30 @@
 /* eslint-disable */
 import * as yup from 'yup';
+import { AnyObject, Maybe } from 'yup/lib/types';
 import { LocaleObject } from 'yup/lib/locale';
+import { telValidator } from 'services/utils/TelUtil';
+
+/**
+ * 電話番号バリデーション追加
+ */
+yup.addMethod(yup.mixed, 'tel', function () {
+  return this.test('tel', '', function (value) {
+    const { path, createError } = this;
+    return telValidator(value)
+      ? true
+      : createError({ path, message: string['tel'] });
+  });
+});
+
+declare module 'yup' {
+  interface StringSchema<
+    TType extends Maybe<string> = string | undefined,
+    TContext extends AnyObject = AnyObject,
+    TOut extends TType = TType,
+  > extends yup.BaseSchema<TType, TContext, TOut> {
+    tel(): StringSchema<TType, TContext>;
+  }
+}
 
 export const mixed = {
   default: ({ label }: any): string =>
@@ -37,6 +61,7 @@ export const string = {
     `${label ? `${label}には` : ''}小文字のみ入力できます`,
   uppercase: ({ label }: any): string =>
     `${label ? `${label}には` : ''}大文字のみ入力できます`,
+  tel: ({ label }: any): string => `${label ? `${label}の` : ''}値が不正です`,
 };
 
 export const number = {
@@ -84,3 +109,13 @@ const ja = {
 yup.setLocale(ja as LocaleObject);
 
 export const YupJa = yup;
+
+export const passwordValidator = () =>
+  YupJa.string()
+    .min(8)
+    .matches(
+      /^(?=.*?[a-z])(?=.*?\d)(?=.*?[!-/:-@[-`{-~])[!-~]{8,}$/i,
+      '半角英数字、記号をそれぞれ1つ以上指定してください',
+    );
+export const passwordConfirmValidator = (passwordField: string) =>
+  yup.string().oneOf([yup.ref(passwordField)], 'パスワードが一致しません');
