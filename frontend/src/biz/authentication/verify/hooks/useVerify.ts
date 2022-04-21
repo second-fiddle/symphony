@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { HttpResult, httpService } from 'services/https';
+import { HttpResult, httpClient, HttpResponse } from '@/services/https';
 
 /**
  *メール認証画面のイベントを定義します。
@@ -18,7 +18,9 @@ export const useVerify = (): [HttpResult | null] => {
     }
 
     const verify = async () => {
-      const httpResponse = await httpService.get(emailVerifyUrl);
+      const httpResponse = await httpClient
+        .get(emailVerifyUrl)
+        .json<HttpResponse>();
       if (httpResponse.ok) {
         setResult({ result: 'success', message: httpResponse.message });
       } else {

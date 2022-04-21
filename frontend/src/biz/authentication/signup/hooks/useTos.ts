@@ -1,7 +1,7 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useSetRecoilState } from 'recoil';
-import { HttpResult } from 'services/https';
+import { HttpResult } from '@/services/https';
 import { signupSelector } from '../states/signupAtom';
 
 /**
@@ -22,14 +22,14 @@ export const useTos = (): [
    * 利用規約に同意するチェック状態変更ハンドラー
    * @param e イベント
    */
-  const handleAgreeChange = useCallback((e) => {
+  const handleAgreeChange = useCallback((e: any) => {
     setAgree(e.target.checked);
   }, []);
   /**
    * 同意するボタンクリック
    * @param e イベント
    */
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     if (!agree) {
       return;

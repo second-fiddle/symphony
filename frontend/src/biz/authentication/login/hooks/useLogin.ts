@@ -1,4 +1,4 @@
-import { YupJa as yup } from 'services/validations/yup/i18n/yupJa';
+import { YupJa as yup } from '@/services/validations/yup/i18n/yupJa';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Control,
@@ -7,18 +7,18 @@ import {
   UseFormHandleSubmit,
 } from 'react-hook-form';
 import { useCallback, useEffect, useState } from 'react';
-import { httpClient, HttpResult } from 'services/https';
-import { useLocation, useNavigate } from 'react-router';
+import { httpClient, HttpResult } from '@/services/https';
+import { useNavigate } from 'react-router';
 import { useSetRecoilState } from 'recoil';
-import { authAtom } from 'states/authAtom';
+import { authAtom } from '@/states/authAtom';
 import {
   LocalStorageKey,
   setStoredInfo,
-} from 'services/resources/storages/localStorage';
+} from '@/services/resources/storages/localStorage';
 import { useErrorHandler } from 'react-error-boundary';
 import { requestLogin } from '../apis/requestLogin';
 
-type FormValues = {
+export type FormValues = {
   email: string;
   password: string;
 };
@@ -43,10 +43,9 @@ export const useLogin = (): [
     resolver: yupResolver(schema),
   });
   const navigate = useNavigate();
-  const location = useLocation();
   const handleError = useErrorHandler();
 
-  const from = location.state?.from?.pathname || '/';
+  const from = window.location.pathname || '/';
 
   /**
    * ログインボタンクリック

@@ -1,5 +1,5 @@
 import { VFC } from 'react';
-import { ResetPassword } from 'biz/authentication/resetPassword/resetPassword';
+import { ResetPassword } from '@/biz/authentication/resetPassword/resetPassword';
 
 /**
  * パスワード再設定ページ

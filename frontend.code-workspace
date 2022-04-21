@@ -1,0 +1,9 @@
+{
+	"folders": [
+		{
+			"uri": "vscode-remote://dev-container+633a5c6465765c70726f6a6563745c7365636f6e64666964646c655c73796d70686f6e79/frontend"
+		}
+	],
+	"remoteAuthority": "dev-container+633a5c6465765c70726f6a6563745c7365636f6e64666964646c655c73796d70686f6e79",
+	"settings": {}
+}

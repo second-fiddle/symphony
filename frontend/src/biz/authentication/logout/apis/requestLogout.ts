@@ -1,4 +1,4 @@
-import { HttpResponse, httpService } from 'services/https';
+import { HttpResponse, httpService } from '@/services/https';
 
 /**
  * パスワード変更を行う

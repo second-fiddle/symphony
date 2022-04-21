@@ -1,7 +1,7 @@
 import { VFC } from 'react';
-import { Button } from 'components/ui/inputs';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { convertLfToBr } from 'services/utils/StringUtil';
+import { Button } from '@/components/ui/inputs';
+import { convertLfToBr } from '@/services/utils/StringUtil';
 
 type Props = {
   error: Error;
@@ -21,8 +21,7 @@ export const ErrorFallback: VFC<Props> = (props) => {
           <Button
             className="danger"
             startIcon={<ArrowBackIcon fontSize="small" />}
-            onClick={resetErrorBoundary}
-          >
+            onClick={resetErrorBoundary}>
             前に戻る
           </Button>
         </p>

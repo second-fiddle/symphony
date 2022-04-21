@@ -1,4 +1,4 @@
-import { Button, Link } from 'components/ui/inputs';
+import { Button, Link } from '@/components/ui/inputs';
 import { VFC } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 

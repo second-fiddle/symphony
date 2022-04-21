@@ -1,5 +1,5 @@
 import { VFC } from 'react';
-import { SignupProfile } from 'biz/authentication/signup/signupProfile';
+import { SignupProfile } from '@/biz/authentication/signup/signupProfile';
 
 /**
  * プロフィール入力ページ

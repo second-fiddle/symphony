@@ -7,7 +7,7 @@ ENV TZ=UTC \
   # locale
   LANG=en_US.UTF-8 \
   LANGUAGE=en_US:en \
-  LC_ALL=en_US.UTF-8 \
+  LC_ALL=ja_JP.UTF-8 \
   # composer environment
   COMPOSER_ALLOW_SUPERUSER=1 \
   COMPOSER_HOME=/composer
@@ -31,3 +31,7 @@ WORKDIR $APP_HOME
 
 RUN apt-get update && \
     apt-get -y install vim
+
+COPY ./backend /work/backend
+
+RUN composer install --no-dev

@@ -7,7 +7,7 @@ import {
   OutlinedInput,
 } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
-import { convertLfToBr } from 'services/utils/StringUtil';
+import { convertLfToBr } from '@/services/utils/StringUtil';
 import { RhfRegisterInputFieldProps } from './props';
 
 /**

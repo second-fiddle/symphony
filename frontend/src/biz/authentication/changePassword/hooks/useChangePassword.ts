@@ -1,4 +1,4 @@
-import { YupJa as yup } from 'services/validations/yup/i18n/yupJa';
+import { YupJa as yup } from '@/services/validations/yup/i18n/yupJa';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Control,
@@ -7,7 +7,7 @@ import {
   UseFormHandleSubmit,
 } from 'react-hook-form';
 import { useCallback, useEffect, useState } from 'react';
-import { httpClient, HttpResult } from 'services/https';
+import { httpClient, HttpResult } from '@/services/https';
 import { useNavigate } from 'react-router';
 import { useErrorHandler } from 'react-error-boundary';
 import { requestChangePassword } from '../apis/requestChangePassword';
@@ -15,6 +15,13 @@ import { requestChangePassword } from '../apis/requestChangePassword';
 type FormValues = {
   password: string;
   confirmPassword: string;
+};
+
+export type ChangePasswordReqParams = {
+  password: string;
+  password_confirmation: string;
+  email?: string | null;
+  token?: string | null;
 };
 
 const schema = yup.object({
@@ -60,7 +67,7 @@ export const useChangePassword = (): [
       try {
         await httpClient.get('/sanctum/csrf-cookie');
 
-        const params = {
+        const params: ChangePasswordReqParams = {
           password: values.password,
           password_confirmation: values.confirmPassword,
           email,

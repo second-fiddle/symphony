@@ -1,7 +1,7 @@
 import { memo, VFC } from 'react';
-import { Alert } from 'components/ui/notifications';
+import { Alert } from '@/components/ui/notifications';
 import { Link } from 'react-router-dom';
-import { HttpResult } from 'services/https';
+import { HttpResult } from '@/services/https';
 
 type Props = HttpResult;
 

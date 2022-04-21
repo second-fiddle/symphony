@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { VFC } from 'react';
-import { EmailField } from 'components/ui/inputs/';
+import { EmailField } from '@/components/ui/inputs/';
 import { Controller, DeepMap, FieldError, FieldValues } from 'react-hook-form';
-import { InputFieldProps } from 'components/ui/inputs/props';
+import { InputFieldProps } from '@/components/ui/inputs/props';
 
 /**
  * React hook form メールアドレス

@@ -2,7 +2,7 @@
 import * as yup from 'yup';
 import { AnyObject, Maybe } from 'yup/lib/types';
 import { LocaleObject } from 'yup/lib/locale';
-import { telValidator } from 'services/utils/TelUtil';
+import { telValidator } from '@/services/utils/TelUtil';
 
 /**
  * 電話番号バリデーション追加

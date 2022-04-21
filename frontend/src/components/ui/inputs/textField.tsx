@@ -5,7 +5,7 @@ import {
   InputLabel,
   OutlinedInput,
 } from '@mui/material';
-import { convertLfToBr } from 'services/utils/StringUtil';
+import { convertLfToBr } from '@/services/utils/StringUtil';
 import { RhfRegisterInputFieldProps } from './props';
 
 /**

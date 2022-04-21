@@ -1,11 +1,11 @@
 import React, { FormEvent, useCallback, useEffect, useState } from 'react';
-import { HttpResult } from 'services/https';
+import { HttpResult } from '@/services/https';
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router';
-import { Member } from 'models/member';
+import { Member } from '@/models/member';
 import { useErrorHandler } from 'react-error-boundary';
 import { StatusCodes } from 'http-status-codes';
-import { IdentifyInfo } from 'models/identifyInfo';
+import { IdentifyInfo } from '@/models/identifyInfo';
 import { omit } from 'lodash';
 import { requestProfileConfirm } from '../apis/requestProfileConfirm';
 import { signupSelector } from '../states/signupAtom';

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { VFC } from 'react';
-import { InputFieldProps } from 'components/ui/inputs/props';
-import { PasswordField } from 'components/ui/inputs';
+import { InputFieldProps } from '@/components/ui/inputs/props';
+import { PasswordField } from '@/components/ui/inputs';
 import { Controller, DeepMap, FieldError, FieldValues } from 'react-hook-form';
 
 /**

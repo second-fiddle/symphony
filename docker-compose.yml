@@ -1,0 +1,41 @@
+version: "3.8"
+volumes:
+  php-fpm-socket:
+  db-store:
+  psysh-store:
+  symphony-vendor-store:
+networks:
+  nw-symphony:
+    driver: bridge
+services:
+  app:
+    extends:
+      file: docker-compose-init.yml
+      service: app
+#    volumes:
+#      - /work/backend/vendor
+
+  web:
+    extends:
+      file: docker-compose-init.yml
+      service: web
+
+  db:
+    extends:
+      file: docker-compose-init.yml
+      service: db
+
+  frontend:
+    extends:
+      file: docker-compose-init.yml
+      service: frontend
+    volumes:
+     - /frontend/node_modules
+#    command: sh -c "yarn start"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+  mailcatcher:
+    extends:
+      file: docker-compose-init.yml
+      service: mailcatcher

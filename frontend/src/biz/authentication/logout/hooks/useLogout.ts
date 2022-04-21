@@ -1,5 +1,5 @@
 import { useSetRecoilState } from 'recoil';
-import { authAtom } from 'states/authAtom';
+import { authAtom } from '@/states/authAtom';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { requestLogout } from '../apis/requestLogout';
