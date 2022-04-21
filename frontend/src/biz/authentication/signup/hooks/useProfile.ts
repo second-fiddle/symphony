@@ -3,7 +3,7 @@ import {
   passwordConfirmValidator,
   passwordValidator,
   YupJa as yup,
-} from 'services/validations/yup/i18n/yupJa';
+} from '@/services/validations/yup/i18n/yupJa';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Control,
@@ -11,17 +11,17 @@ import {
   useForm,
   UseFormHandleSubmit,
 } from 'react-hook-form';
-import { HttpResult } from 'services/https';
+import { HttpResult } from '@/services/https';
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router';
 import { StatusCodes } from 'http-status-codes';
 import { useErrorHandler } from 'react-error-boundary';
-import { IdentifyInfo } from 'models/identifyInfo';
-import { Member } from 'models/member';
+import { IdentifyInfo } from '@/models/identifyInfo';
+import { Member } from '@/models/member';
 import { signupSelector } from '../states/signupAtom';
 import { requestProfile } from '../apis/requestProfile';
 
-type FormValues = {
+export type FormValues = {
   email: string;
   password: string;
   confirmPassword: string;

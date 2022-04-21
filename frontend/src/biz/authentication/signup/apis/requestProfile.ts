@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
-import { HttpResponse, httpService } from 'services/https';
+import { HttpResponse, httpService } from '@/services/https';
+import { FormValues } from '../hooks/useProfile';
 
 /**
  * エラーハンドラー
@@ -21,7 +22,9 @@ const catchCallback = (error: HttpResponse) => {
  * @param values プロフィールデータ
  * @returns Httpレスポンス
  */
-export const requestProfile = async (values): Promise<HttpResponse> => {
+export const requestProfile = async (
+  values: FormValues,
+): Promise<HttpResponse> => {
   const httpResponse = await httpService.post(
     '/api/signup/profile',
     values,

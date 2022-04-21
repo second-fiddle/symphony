@@ -9,7 +9,7 @@ const region = 'JP';
  * @param value 電話番号
  * @returns boolean true: 正常, false: 異常
  */
-export const telValidator = (value): boolean => {
+export const telValidator = (value: string): boolean => {
   if (!value) {
     return true;
   }

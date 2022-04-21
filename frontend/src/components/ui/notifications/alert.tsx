@@ -1,7 +1,7 @@
 import { VFC } from 'react';
 import { Alert as MuiAlert } from '@mui/material';
-import { convertLfToBr } from 'services/utils/StringUtil';
-import { HttpResultType } from 'services/https/HttpResponse';
+import { convertLfToBr } from '@/services/utils/StringUtil';
+import { HttpResultType } from '@/services/https/HttpResponse';
 
 type Props = {
   severity?: HttpResultType;

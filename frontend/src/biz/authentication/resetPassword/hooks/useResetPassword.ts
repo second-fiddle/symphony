@@ -1,4 +1,5 @@
-import { YupJa as yup } from 'services/validations/yup/i18n/yupJa';
+import { useCallback, useState } from 'react';
+import { YupJa as yup } from '@/services/validations/yup/i18n/yupJa';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Control,
@@ -6,12 +7,11 @@ import {
   useForm,
   UseFormHandleSubmit,
 } from 'react-hook-form';
-import { useCallback, useState } from 'react';
-import { HttpResult } from 'services/https';
+import { HttpResult } from '@/services/https';
 import { useErrorHandler } from 'react-error-boundary';
 import { requestResetPassword } from '../apis/requestResetPassword';
 
-type FormValues = {
+export type FormValues = {
   email: string;
 };
 

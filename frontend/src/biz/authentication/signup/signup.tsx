@@ -1,7 +1,7 @@
-import { FC, memo } from 'react';
+import { VFC, memo } from 'react';
 import styled from '@emotion/styled';
 import { Box, Container } from '@mui/material';
-import { Button } from 'components/ui/inputs';
+import { Button } from '@/components/ui/inputs';
 import { useSignup } from './hooks/useSignup';
 
 const SWrapper = styled('div')`
@@ -11,12 +11,13 @@ const SWrapper = styled('div')`
 
 type Props = {
   message?: string;
+  children: React.ReactNode;
 };
 
 /**
  * ユーザー登録レイアウト定義
  */
-export const Signup: FC<Props> = memo((props) => {
+export const Signup: VFC<Props> = memo((props) => {
   const { children } = props;
   const [pageDefine, handleBack] = useSignup();
 

@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import KeyIcon from '@mui/icons-material/Key';
-import { convertLfToBr } from 'services/utils/StringUtil';
+import { convertLfToBr } from '@/services/utils/StringUtil';
 import { RhfRegisterInputFieldProps } from './props';
 import { useShowPassword } from './hooks/useShowPassword';
 

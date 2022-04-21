@@ -1,5 +1,5 @@
 import { VFC } from 'react';
-import { Login } from 'biz/authentication/login/login';
+import { Login } from '@/biz/authentication/login/login';
 
 /**
  * ログインページ

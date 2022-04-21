@@ -1,5 +1,5 @@
-import { Verify } from 'biz/authentication/verify/verify';
 import { VFC } from 'react';
+import { Verify } from '@/biz/authentication/verify/verify';
 
 /**
  * メール認証

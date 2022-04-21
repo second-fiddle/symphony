@@ -3,7 +3,7 @@ import ky from 'ky';
 import {
   getStoredInfo,
   LocalStorageKey,
-} from 'services/resources/storages/localStorage';
+} from '@/services/resources/storages/localStorage';
 import { isEmpty } from 'lodash';
 import { createResponse, HttpResponse } from './HttpResponse';
 
@@ -44,7 +44,15 @@ export const httpClient = ky.extend({
   },
 });
 
-const makeGetUrl = (url: string, params): string => {
+const makeGetUrl = (
+  url: string,
+  params:
+    | string
+    | string[][]
+    | Record<string, string>
+    | URLSearchParams
+    | undefined,
+): string => {
   if (isEmpty(params)) {
     return url;
   }
@@ -66,7 +74,7 @@ export class httpService {
   static get = async (
     url: string,
     params = {},
-    catchCallback?: (error) => HttpResponse,
+    catchCallback?: (error: any) => HttpResponse,
   ): Promise<HttpResponse> => {
     const requestUrl = makeGetUrl(url, params);
 
@@ -100,9 +108,9 @@ export class httpService {
    * @returns HttpResponse
    */
   static post = async (
-    url,
+    url: string,
     params = {},
-    catchCallback?: (error) => HttpResponse,
+    catchCallback?: (error: any) => HttpResponse,
   ): Promise<HttpResponse> => {
     const httpResponse = await httpClient
       .post(url, { json: params })

@@ -1,5 +1,5 @@
 import { VFC } from 'react';
-import { ChangePassword } from 'biz/authentication/changePassword/changePassword';
+import { ChangePassword } from '@/biz/authentication/changePassword/changePassword';
 
 /**
  * パスワード変更ページ

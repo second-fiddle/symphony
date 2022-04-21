@@ -5,7 +5,7 @@ import {
   FormControlLabel,
   FormHelperText,
 } from '@mui/material';
-import { convertLfToBr } from 'services/utils/StringUtil';
+import { convertLfToBr } from '@/services/utils/StringUtil';
 import { RhfRegisterCheckboxProps } from './props';
 
 /**

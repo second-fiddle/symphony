@@ -4,10 +4,10 @@ import {
   Link,
   RhfEmailField,
   RhfPasswordField,
-} from 'components/ui/inputs';
+} from '@/components/ui/inputs';
 import { Stack } from '@mui/material';
-import { AuthenticationLayout } from 'biz/layouts/authentication';
 import { useLogin } from './hooks/useLogin';
+import { AuthenticationLayout } from '@/biz/layout/authentication';
 
 /**
  * ログインページ
@@ -19,8 +19,7 @@ export const Login: VFC = memo(() => {
     <AuthenticationLayout
       title="ログイン"
       result={httpResponse?.result}
-      message={httpResponse?.message}
-    >
+      message={httpResponse?.message}>
       <form onSubmit={handleSubmit(handleLogin)} className="pb4 bb b--silver">
         <Stack spacing={2}>
           <RhfEmailField

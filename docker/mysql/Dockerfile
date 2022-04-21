@@ -3,4 +3,4 @@ LABEL maintainer="ucan-lab <yes@u-can.pro>"
 
 ENV TZ=UTC
 
-COPY ./mysql/my.cnf /etc/my.cnf
+COPY ../docker/mysql/my.cnf /etc/my.cnf

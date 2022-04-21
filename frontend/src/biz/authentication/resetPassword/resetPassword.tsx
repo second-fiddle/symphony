@@ -1,8 +1,8 @@
 import { memo, VFC } from 'react';
-import { Button, Link, RhfEmailField } from 'components/ui/inputs';
+import { Button, Link, RhfEmailField } from '@/components/ui/inputs';
 import { Stack } from '@mui/material';
-import { AuthenticationLayout } from 'biz/layouts/authentication';
 import { useResetPassword } from './hooks/useResetPassword';
+import { AuthenticationLayout } from '@/biz/layout/authentication';
 
 /**
  * パスワードの再設定ページ
@@ -14,8 +14,7 @@ export const ResetPassword: VFC = memo(() => {
     <AuthenticationLayout
       title="パスワードの再設定"
       result={httpResponse?.result}
-      message={httpResponse?.message}
-    >
+      message={httpResponse?.message}>
       <form onSubmit={handleSubmit(handleSend)}>
         <Stack spacing={2}>
           <RhfEmailField

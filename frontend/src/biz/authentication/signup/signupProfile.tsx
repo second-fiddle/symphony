@@ -5,9 +5,9 @@ import {
   RhfPasswordField,
   RhfTelField,
   RhfTextField,
-} from 'components/ui/inputs';
+} from '@/components/ui/inputs';
 import { Box, Stack } from '@mui/material';
-import { Alert } from 'components/ui/notifications';
+import { Alert } from '@/components/ui/notifications';
 import { useProfile } from './hooks/useProfile';
 import { Signup } from './signup';
 

@@ -17,6 +17,7 @@
     "stylelint.vscode-stylelint",
     "visualstudioexptteam.vscodeintellicode",
     "vscode-icons-team.vscode-icons",
-    "mosapride.zenkaku"
+    "mosapride.zenkaku",
+    "MS-CEINTL.vscode-language-pack-ja"
   ]
 }

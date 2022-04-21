@@ -1,4 +1,4 @@
-import { LoginInfo } from 'models/loginInfo';
+import { LoginInfo } from '@/models/loginInfo';
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 

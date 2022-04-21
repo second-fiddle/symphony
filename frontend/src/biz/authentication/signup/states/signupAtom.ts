@@ -1,6 +1,6 @@
 import { has } from 'lodash';
-import { IdentifyInfo } from 'models/identifyInfo';
-import { Member } from 'models/member';
+import { IdentifyInfo } from '@/models/identifyInfo';
+import { Member } from '@/models/member';
 import { atom, selector } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 

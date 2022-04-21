@@ -1,4 +1,5 @@
-import { YupJa as yup } from 'services/validations/yup/i18n/yupJa';
+import { useCallback, useState } from 'react';
+import { YupJa as yup } from '@/services/validations/yup/i18n/yupJa';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Control,
@@ -6,19 +7,18 @@ import {
   useForm,
   UseFormHandleSubmit,
 } from 'react-hook-form';
-import { useCallback, useState } from 'react';
-import { HttpResult } from 'services/https';
+import { HttpResult } from '@/services/https';
 import { useSetRecoilState } from 'recoil';
 import {
   LocalStorageKey,
   setStoredInfo,
-} from 'services/resources/storages/localStorage';
+} from '@/services/resources/storages/localStorage';
 import { useNavigate } from 'react-router';
 import { useErrorHandler } from 'react-error-boundary';
 import { signupSelector } from '../states/signupAtom';
 import { requestIdentify } from '../apis/requestIdentify';
 
-type FormValues = {
+export type FormValues = {
   propertyCd: string;
   roomNo: string;
   password: string;

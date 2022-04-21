@@ -1,10 +1,10 @@
-import { VFC, useEffect, Suspense } from 'react';
-import { useLocation, useNavigate } from 'react-router';
-import { FullpageCircularProgress } from 'components/ui/notifications';
-import { Header } from 'biz/layouts/header';
-import { AppRoute } from 'routes/appRoute';
+import { Suspense, useEffect, VFC } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { ErrorFallback } from 'pages/500';
+import { useLocation, useNavigate } from 'react-router';
+import { Header } from './biz/layout/header';
+import { FullpageCircularProgress } from './components/ui/notifications';
+import { ErrorFallback } from './pages/500';
+import { AppRoute } from './routes/appRoute';
 
 const App: VFC = () => {
   const { hash, pathname } = useLocation();
@@ -20,8 +20,7 @@ const App: VFC = () => {
       <main>
         <ErrorBoundary
           FallbackComponent={ErrorFallback}
-          onReset={() => navigate(-1)}
-        >
+          onReset={() => navigate(-1)}>
           <Suspense fallback={<FullpageCircularProgress />}>
             <AppRoute />
           </Suspense>

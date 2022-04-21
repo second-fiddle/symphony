@@ -1,5 +1,5 @@
 import { VFC } from 'react';
-import { SignupTos } from 'biz/authentication/signup/signupTos';
+import { SignupTos } from '@/biz/authentication/signup/signupTos';
 
 /**
  * 利用規約ページ

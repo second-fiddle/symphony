@@ -1,5 +1,5 @@
 import { VFC } from 'react';
-import { SignupComplete } from 'biz/authentication/signup/signupComplete';
+import { SignupComplete } from '@/biz/authentication/signup/signupComplete';
 
 /**
  * 会員登録完了ページ

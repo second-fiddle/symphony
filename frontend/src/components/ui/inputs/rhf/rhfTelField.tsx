@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { VFC } from 'react';
 import { Controller, DeepMap, FieldError, FieldValues } from 'react-hook-form';
-import { InputFieldProps } from 'components/ui/inputs/props';
-import { TelField } from 'components/ui/inputs';
+import { InputFieldProps } from '@/components/ui/inputs/props';
+import { TelField } from '@/components/ui/inputs';
 
 /**
  * React hook form テキスト

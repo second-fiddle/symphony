@@ -1,0 +1,165 @@
+{
+  // 適用する環境
+  "env": {
+    "es6": true,
+    "node": true,
+    "browser": true,
+    "commonjs": true
+  },
+  // パーサー
+  "parser": "@typescript-eslint/parser",
+  // jsx を使います
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    // import 文でモジュールを使用します
+    "sourceType": "module"
+  },
+  // React のバージョンは自動検出に
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    }
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "import",
+    "jsx-a11y",
+    "prefer-arrow",
+    "react",
+    "react-hooks",
+    "prettier"
+  ],
+  "root": true,
+  // 基本的にルールは recommended に従う
+  // prettier は配列の最後尾に書く
+  "extends": [
+    "plugin:react/recommended",
+    "eslint:recommended",
+    "airbnb",
+    "airbnb/hooks",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "prettier/prettier",
+    "prettier"
+  ],
+  "rules": {
+    // クラスメンバーの定義の間に空行を入れるかどうかを定義
+    // 1行記述のメンバーのときは空行を入れなくていいように
+    "lines-between-class-members": [
+      "error",
+      "always",
+      {
+        "exceptAfterSingleLine": true
+      }
+    ],
+    // void 演算子の（式としての）使用を禁ずる
+    "no-void": [
+      "error",
+      {
+        "allowAsStatement": true
+      }
+    ],
+    // 任意の構文の間に区切りの空行を入れるかどうかを定義するルール。
+    // return文の前に常に空行を入れるよう設定
+    "padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "return"
+      }
+    ],
+    // 未使用変数の定義を許さない
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "argsIgnorePattern": "_",
+        "ignoreRestSiblings": false,
+        "varsIgnorePattern": "_"
+      }
+    ],
+    // インポートの際のファイル拡張子を記述するかを定義するルール
+    // npm パッケージ以外のファイルについて .js、.jsx、.ts、.tsx のファイルのみ拡張子を省略
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    // JSX のファイル拡張子を制限するルール。eslint-config-airbnb で .jsx のみに限定されているので、.tsx を追加
+    "react/jsx-filename-extension": [
+      "error",
+      {
+        "extensions": [".jsx", ".tsx"]
+      }
+    ],
+    // JSX でコンポーネントを呼ぶときの props の記述にスプレッド構文を許さない
+    "react/jsx-props-no-spreading": [
+      "error",
+      {
+        "html": "enforce",
+        "custom": "enforce",
+        "explicitSpread": "ignore"
+      }
+    ],
+    // import React from "react" を書かなくてもいいようにする
+    "react/react-in-jsx-scope": "off",
+    // TypeScirpt なので prop-types は要らない
+    "react/prop-types": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "warn",
+    "react/function-component-definition": [
+      2,
+      { "namedComponents": "arrow-function" }
+    ],
+    "no-shadow": "off",
+    "prettier/prettier": "error",
+    "prefer-arrow/prefer-arrow-functions": [
+      "error",
+      {
+        "disallowPrototype": true,
+        "singleReturnOnly": false,
+        "classPropertiesAllowed": false
+      }
+    ],
+    "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": [
+      "error", {
+        "devDependencies": true,
+        "optionalDependencies": false
+      }
+    ],
+    "import/no-unresolved": "off",
+  },
+  "overrides": [
+    {
+      "files": ["*.tsx"],
+      "rules": {
+        "react/prop-types": "off"
+      }
+    }
+  ]
+}
